@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/lightning.png</file>
+    </qresource>
+</RCC>
