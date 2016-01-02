@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMap>
+#include "convert.h"
 
 class QComboBox;
 class QLabel;
@@ -48,6 +49,9 @@ private:
     QString pCommand, targetFolder;
     QStringList fileNames, files;
     QMap<QString, QString> formats;
+
+    //convert
+    convert *convertion;
 };
 
 #endif // MAINWINDOW_H

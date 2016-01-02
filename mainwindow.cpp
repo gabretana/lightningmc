@@ -10,12 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightning.png"))));
     setWindowTitle("Lightning");
+    convertion = new convert(this);
     checkConverter();
     targetFolder = QDir::homePath() + "/";
     createComboBoxes();
     createLabels();
     createListWidget();
-    ui->statusBar->showMessage("Using: " + pCommand, 10000);
     ui->actionConvert_Files->setEnabled(false);
     addFormats();
     converter = new QProcess(this);
@@ -30,13 +30,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::checkConverter()
 {
-    int ffExitState, avExitState;
+    /*int ffExitState, avExitState;
     ffExitState = QProcess::execute("ffmpeg", QStringList() << "-version");
     avExitState = QProcess::execute("avconv", QStringList() << "-version");
     if(ffExitState != 0)
         pCommand = "avconv";
     else if(avExitState != 0)
-        pCommand = "ffmpeg";
+        pCommand = "ffmpeg";*/
+    convertion->processUsed();
+    pCommand = convertion->process();
+    ui->statusBar->showMessage("Using: " + pCommand, 10000);
 }
 
 void MainWindow::createComboBoxes()
