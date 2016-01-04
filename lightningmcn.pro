@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    convert.cpp
+    convert.cpp \
+    lightningfiles.cpp
 
 HEADERS  += mainwindow.h \
-    convert.h
+    convert.h \
+    lightningfiles.h
 
 FORMS    += mainwindow.ui
 

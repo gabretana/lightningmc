@@ -51,7 +51,7 @@ private:
     QMap<QString, QString> formats;
 
     //convert
-    convert *convertion;
+    Convert *convertion;
 };
 
 #endif // MAINWINDOW_H

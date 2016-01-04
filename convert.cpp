@@ -1,12 +1,12 @@
 #include "convert.h"
 #include <QDebug>
 
-convert::convert(QObject *parent) : QObject(parent)
+Convert::Convert(QObject *parent) : QObject(parent)
 {
     ffmpeg = new QProcess(this);
 }
 
-void convert::processUsed()
+void Convert::processUsed()
 {
     ffmpeges = QProcess::execute("ffmpeg", QStringList() << "-version");
     libaves = QProcess::execute("avconv", QStringList() << "-version");
@@ -17,7 +17,7 @@ void convert::processUsed()
     qDebug() << "Lightning Convert: using " + pProcess;
 }
 
-void convert::connectActions()
+void Convert::connectActions()
 {
     //QProcess
     //connect(ffmpeg, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));

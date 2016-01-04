@@ -5,11 +5,11 @@
 
 class QProcess;
 
-class convert : public QObject
+class Convert : public QObject
 {
     Q_OBJECT
 public:
-    explicit convert(QObject *parent = 0);
+    explicit Convert(QObject *parent = 0);
     void processUsed();
     QString process() {return pProcess;}
 

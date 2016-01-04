@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightning.png"))));
     setWindowTitle("Lightning");
-    convertion = new convert(this);
+    convertion = new Convert(this);
     checkConverter();
     targetFolder = QDir::homePath() + "/";
     createComboBoxes();
@@ -45,7 +45,7 @@ void MainWindow::checkConverter()
 void MainWindow::createComboBoxes()
 {
     bitrateCB = new QComboBox(this);
-    bitrateCB->addItems(QStringList() << "96k" << "128k" << "160k" << "256k" << "320k");
+    bitrateCB->addItems(QStringList() << "96k" << "128k" << "160k" << "192k" << "256k" << "320k");
     bitrateCB->setCurrentIndex(1);
     bitrateCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     ui->optionsHLayout->addWidget(bitrateCB);
