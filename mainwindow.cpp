@@ -112,10 +112,13 @@ void MainWindow::addFormats()
 void MainWindow::selectTargetFolder()
 {
     targetFolder = QFileDialog::getExistingDirectory(this, "Lightning", QDir::homePath());
-    if(targetFolder.isEmpty())
+    if(targetFolder.isEmpty()) {
         targetFolder = QDir::homePath() + "/";
-    else
+        lFiles->setPath(targetFolder);
+    } else {
         targetFolder = targetFolder + "/";
+        lFiles->setPath(targetFolder);
+    }
     targetFolderLb->setText("Target Folder: " + targetFolder);
 }
 
@@ -140,6 +143,7 @@ void MainWindow::addFiles()
         addedFilesLW->addItems(fileNames);
         ui->actionConvert_Files->setEnabled(true);
         files << fileNames;
+        lFiles->addFilesToChangeSuffix(fileNames);
     }
     for(int i = 0; i < addedFilesLW->count(); ++i){
         addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent"));
@@ -162,6 +166,7 @@ void MainWindow::clearFiles()
         addedFilesLW->clear();
         files.clear();
         ui->actionConvert_Files->setEnabled(false);
+        lFiles->clearAllData();
     }
 }
 

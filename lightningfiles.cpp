@@ -3,27 +3,33 @@
 
 LightningFiles::LightningFiles(QObject *parent) : QObject(parent)
 {
-
+    newsuffix = ".ogg";
 }
 
-void LightningFiles::setFilesSubffix(QString suffix)
+void LightningFiles::setFilesSuffix(QString suffix)
 {
     newsuffix = suffix;
+    qDebug() << "LightningFiles new suffix" + newsuffix;
 }
 
-void LightningFiles::setFilesToChangeSuffix(QStringList files)
+void LightningFiles::setPath(QString p)
+{
+    newPath = p;
+    qDebug() << "LightningFiles new path" + newPath;
+}
+
+void LightningFiles::addFilesToChangeSuffix(QStringList files)
 {
     filesWithOldSuffix = files;
+    addFileInfoToList(files);
 }
 
-QStringList LightningFiles::addNewSuffix(QStringList files, QString newSuffix, QString path)
+void LightningFiles::addNewSuffix()
 {
-    filesWithOldSuffix << files;
-    addFileInfoToList(files);
     QString tmp = "";
     int count = 0;
-    foreach (tmp, filesNames) {
-        pFilesWithNewSuffix << path + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newSuffix.toLower();
+    foreach (tmp, fileNames) {
+        pFilesWithNewSuffix << newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
         ++count;
         qDebug() << pFilesWithNewSuffix[count];
     }
@@ -34,7 +40,18 @@ void LightningFiles::addFileInfoToList(QStringList files)
 {
     for(int i = 0; i < files.size(); ++i) {
         fileInfoList << QFileInfo(files[i]);
-        filesNames << QFileInfo(files[i]).fileName();
+        fileNames << QFileInfo(files[i]).fileName();
         qDebug() << fileNames[i];
     }
+}
+
+void LightningFiles::clearAllData()
+{
+    filesWithOldSuffix.clear();
+    pFilesWithNewSuffix.clear();
+    fileNames.clear();
+    newPath = "";
+    newsuffix = ".ogg";
+    fileInfoList.clear();
+    qDebug() << "LightningFiles clear all";
 }

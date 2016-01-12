@@ -9,11 +9,14 @@ class LightningFiles : public QObject
     Q_OBJECT
 public:
     explicit LightningFiles(QObject *parent = 0);
-    void setFilesToChangeSuffix(QStringList);
-    void setFilesSubffix(QString);
+    void addFilesToChangeSuffix(QStringList);
+    void setFilesSuffix(QString);
+    void setPath(QString p);
     QStringList filesWithNewSuffix() {return pFilesWithNewSuffix;}
     QString newSuffix() {return newsuffix;}
-    QStringList addNewSuffix(QStringList, QString, QString);
+    QString path() {return newPath;}
+    void addNewSuffix();
+    void clearAllData();
 
 signals:
 
@@ -22,11 +25,12 @@ public slots:
 private:
 
     //voids
-    void getFileBaseName(QStringList);
+    //void getFileBaseName(QStringList);
+    void addFileInfoToList(QStringList files);
 
     //variables
     QStringList filesWithOldSuffix, pFilesWithNewSuffix, fileNames;
-    QString newsuffix;
+    QString newsuffix, newPath;
     QFileInfoList fileInfoList;
 };
 
