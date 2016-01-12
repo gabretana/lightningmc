@@ -2,6 +2,7 @@
 #define CONVERT_H
 #include <QObject>
 #include <QProcess>
+#include <lightningfiles.h>
 
 class QProcess;
 
@@ -24,6 +25,7 @@ private:
     QProcess *ffmpeg;
     QString pProcess;
     int ffmpeges, libaves;
+    LightningFiles *files;
 };
 
 #endif // CONVERT_H

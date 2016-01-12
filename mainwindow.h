@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMap>
 #include "convert.h"
+#include "lightningfiles.h"
 
 class QComboBox;
 class QLabel;
@@ -52,6 +53,7 @@ private:
 
     //convert
     Convert *convertion;
+    LightningFiles *lFiles;
 };
 
 #endif // MAINWINDOW_H

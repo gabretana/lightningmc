@@ -1,4 +1,5 @@
 #include "lightningfiles.h"
+#include <QDebug>
 
 LightningFiles::LightningFiles(QObject *parent) : QObject(parent)
 {
@@ -17,7 +18,7 @@ void LightningFiles::setFilesToChangeSuffix(QStringList files)
 
 QStringList LightningFiles::addNewSuffix(QStringList files, QString newSuffix, QString path)
 {
-    filesWithOldSuffix = files;
+    filesWithOldSuffix << files;
     addFileInfoToList(files);
     QString tmp = "";
     int count = 0;

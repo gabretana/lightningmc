@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightning.png"))));
     setWindowTitle("Lightning");
     convertion = new Convert(this);
+    lFiles = new LightningFiles(this);
     checkConverter();
     targetFolder = QDir::homePath() + "/";
     createComboBoxes();
