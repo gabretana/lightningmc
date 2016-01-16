@@ -17,6 +17,7 @@ public:
     QString path() {return newPath;}
     void addNewSuffix();
     void clearAllData();
+    void removeFileAt(int f);
 
 signals:
 

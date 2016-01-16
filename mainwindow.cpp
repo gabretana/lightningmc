@@ -154,6 +154,7 @@ void MainWindow::removeFile()
 {
     if(addedFilesLW->count() > 0) {
         files.removeAt(addedFilesLW->currentRow());
+        lFiles->removeFileAt(addedFilesLW->currentRow());
         delete addedFilesLW->currentItem();
         if(addedFilesLW->count() == 0)
             ui->actionConvert_Files->setEnabled(false);
