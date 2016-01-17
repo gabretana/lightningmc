@@ -10,6 +10,7 @@ class LightningFiles : public QObject
 public:
     explicit LightningFiles(QObject *parent = 0);
     void addFilesToChangeSuffix(QStringList);
+    void addFile(QString filename);
     void setFilesSuffix(QString);
     void setPath(QString p);
     QStringList filesWithNewSuffix() {return pFilesWithNewSuffix;}
@@ -20,6 +21,7 @@ public:
     void removeFileAt(int f);
 
 signals:
+    void fileExists(QString oldFileName,  QString newFileName);
 
 public slots:
 

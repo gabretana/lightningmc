@@ -26,12 +26,16 @@ void LightningFiles::addFilesToChangeSuffix(QStringList files)
 
 void LightningFiles::addNewSuffix()
 {
-    QString tmp = "";
+    QString tmp = "", filetmp = "";
     int count = 0;
     foreach (tmp, fileNames) {
-        pFilesWithNewSuffix << newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
-        ++count;
-        qDebug() << "LightningFiles: new suffix " + pFilesWithNewSuffix[count];
+        filetmp = newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
+
+        if(QFile(filetmp).exists()) {
+            qWarning() << "LightningFiles file exists: " + filetmp;
+            emit fileExists(tmp, filetmp);
+        } else
+            pFilesWithNewSuffix << filetmp;
     }
 }
 
@@ -63,4 +67,14 @@ void LightningFiles::clearAllData()
     newsuffix = ".ogg";
     fileInfoList.clear();
     qInfo() << "LightningFiles clear all";
+}
+
+void LightningFiles::addFile(QString filename)
+{
+    filesWithOldSuffix << filename;
+    if(filename != "") {
+        fileInfoList << QFileInfo(filename);
+        fileNames << QFileInfo(filename).fileName();
+        qDebug() << "LightningFiles add file: " + fileNames[fileNames.size() - 1];
+    }
 }
