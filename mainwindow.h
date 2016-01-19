@@ -24,6 +24,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void selectTargetFolder();
     void about();
@@ -42,12 +45,14 @@ private:
     void createListWidget();
     void createProgressBar();
     void addFormats();
+    void readSettings();
+    void writeSettins();
     QComboBox *codecCB, *bitrateCB, *rateCB;
     QLabel *filesHeaderLb, *targetFolderLb;
     QListWidget *addedFilesLW;
     QProgressBar *convertPrB;
     QProcess *converter;
-    QString pCommand, targetFolder;
+    QString pCommand, targetFolder, theme, codec, bitrate, rate;
     QStringList fileNames, files;
     QMap<QString, QString> formats;
 

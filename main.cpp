@@ -4,8 +4,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName("Lightning");
-    a.setApplicationDisplayName("Lightning");
+    a.setApplicationName("LightningMC");
+    a.setApplicationDisplayName("LightningMC");
     a.setApplicationVersion("0.3.1");
     a.setOrganizationName("GXA Software");
     MainWindow w;

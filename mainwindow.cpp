@@ -211,3 +211,42 @@ void MainWindow::convertFiles()
         convertPrB->setVisible(false);
     }
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    writeSettins();
+}
+
+void MainWindow::writeSettins()
+{
+    QSettings settings("GXA Software", "LightningMC");
+    settings.beginGroup("General");
+    settings.setValue("Theme", theme);
+    settings.setValue("Position", pos());
+    settings.setValue("WinSize", size());
+    settings.setValue("PathToSave", targetFolder);
+    settings.endGroup();
+
+    settings.beginGroup("Codec");
+    settings.setValue("Codec", codec);
+    settings.setValue("Bitrate", bitrate);
+    settings.setValue("Rate", rate);
+    settings.endGroup();
+}
+
+void MainWindow::readSettings()
+{
+    QSettings settings("GXA Software", "LightningMC");
+    settings.beginGroup("General");
+    theme = settings.value("Theme", "Light").toString();
+    move(settings.value("Position", QPoint(200, 200)).toPoint());
+    resize(settings.value("WinSize", QSize(600, 400)).toSize());
+    targetFolder = settings.value("PathToSave", QDir::home() + "/").toString();
+    settings.endGroup();
+
+    settings.beginGroup("Codec");
+    codec = settings.value("Codec", QString("OGG")).toString();
+    bitrate = settings.value("Bitrate", QString("160k")).toString();
+    rate = settings.value("Rate", QString("48k")).toString();
+    settings.endGroup();
+}
