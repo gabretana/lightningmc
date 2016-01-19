@@ -22,6 +22,7 @@ signals:
     void processFinished(int, QProcess::ExitStatus);
     void processCrash(int);
     void processErrorReport(QString);
+    void convertionFinished();
 
 private slots:
     void finished(int, QProcess::ExitStatus);

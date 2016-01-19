@@ -28,9 +28,11 @@ void Convert::convert()
 {
     qInfo() << "Lightning Convert: starting";
     if(g_files.size() > 0)
-        ffmpeg->start(pProcess, g_arguments << g_files[i]);
-    else
+        ffmpeg->start(pProcess, g_arguments << g_files[0]);
+    else {
         qWarning() << "Lightning Convert: there are no files";
+        emit convertionFinished();
+    }
 }
 
 void Convert::setFiles(QStringList files)
@@ -46,15 +48,17 @@ void Convert::setArguments(QStringList arguments)
 void Convert::finished(int i, QProcess::ExitStatus exitStatus)
 {
     qWarning() << "Lightning Convert: process exit code " + QString::number(i) + " exit status " + QString::number(exitStatus);
-    if(exitStatus != 0)
+    if(exitStatus != 0) {
+        g_files.removeFirst();
         convert();
-    else
+    } else
         emit processCrash(exitStatus);
 }
 
 void Convert::error(QProcess::ProcessError e)
 {
-    qFatal() << "Lightning process " + pProcess + " exit with error " + ffmpeg->errorString(); + " " + QString::number(e);
+    QString processError = QString::number(e);
+    qWarning() << "Lightning process " + pProcess + " exit with error " + ffmpeg->errorString(); + " " + processError;
     emit processErrorReport(ffmpeg->errorString());
 }
 

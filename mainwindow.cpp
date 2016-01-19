@@ -45,23 +45,25 @@ void MainWindow::checkConverter()
 
 void MainWindow::createComboBoxes()
 {
-    bitrateCB = new QComboBox(this);
+    /*bitrateCB = new QComboBox(this);
     bitrateCB->addItems(QStringList() << "96k" << "128k" << "160k" << "192k" << "256k" << "320k");
     bitrateCB->setCurrentIndex(1);
     bitrateCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    ui->optionsHLayout->addWidget(bitrateCB);
+    ui->optionsHLayout->addWidget(bitrateCB);*/
 
     codecCB = new QComboBox(this);
     codecCB->addItems(QStringList() << "OGG" << "M4A" << "MP3");
-    codecCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    ui->optionsHLayout->addWidget(codecCB);
+    //codecCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    //ui->optionsHLayout->addWidget(codecCB);
+    ui->mainToolBar->addWidget(codecCB);
+    ui->mainToolBar->setMovable(false);
 
-    rateCB = new QComboBox(this);
+    /*rateCB = new QComboBox(this);
     rateCB->addItems(QStringList() << "48k" << "44k" << "32k");
     rateCB->setCurrentIndex(1);
     rateCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     ui->optionsHLayout->addWidget(rateCB);
-    ui->optionsHLayout->addStretch();
+    ui->optionsHLayout->addStretch();*/
 }
 
 

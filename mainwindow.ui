@@ -14,18 +14,16 @@
    <string>Lightning</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="lightningmc"/>
+   <iconset theme="lightningmc">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="0">
+    <item row="2" column="0">
      <layout class="QHBoxLayout" name="miscHLayout"/>
     </item>
-    <item row="1" column="0">
-     <layout class="QVBoxLayout" name="filesVLayout"/>
-    </item>
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="optionsHLayout"/>
+     <layout class="QVBoxLayout" name="filesVLayout"/>
     </item>
    </layout>
   </widget>
@@ -35,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>606</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -71,8 +69,7 @@
   <action name="actionAddFiles">
    <property name="icon">
     <iconset theme="add">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>AddFiles</string>
@@ -87,8 +84,7 @@
   <action name="actionRemove_File">
    <property name="icon">
     <iconset theme="remove">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Remove File</string>
@@ -103,8 +99,7 @@
   <action name="actionClear_Files">
    <property name="icon">
     <iconset theme="edit-clear">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Clear Files</string>
@@ -119,8 +114,7 @@
   <action name="actionConvert_Files">
    <property name="icon">
     <iconset theme="view-refresh">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Convert Files</string>
@@ -151,8 +145,7 @@
   <action name="actionCancel_Convertion">
    <property name="icon">
     <iconset theme="cancel">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Cancel Convertion</string>
