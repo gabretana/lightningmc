@@ -15,13 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     convert.cpp \
-    lightningfiles.cpp
+    lightningfiles.cpp \
+    codecconfigdialog.cpp
 
 HEADERS  += mainwindow.h \
     convert.h \
-    lightningfiles.h
+    lightningfiles.h \
+    codecconfigdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    codecconfigdialog.ui
 
 RESOURCES += \
     application.qrc

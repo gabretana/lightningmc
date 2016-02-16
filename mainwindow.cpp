@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     addFormats();
     converter = new QProcess(this);
     createActions();
+    createMenus();
     createProgressBar();
+    readSettings();
 }
 
 MainWindow::~MainWindow()
@@ -91,8 +93,19 @@ void MainWindow::createProgressBar()
     ui->miscHLayout->addWidget(convertPrB);
 }
 
+void MainWindow::createMenus()
+{
+    editMenu = new QMenu(tr("Edit"), this);
+    editMenu->addAction(codecConfigAct);
+    ui->menuBar->addMenu(editMenu);
+}
+
 void MainWindow::createActions()
 {
+    codecConfigAct = new QAction(tr("Codec Configuration"),this);
+    codecConfigAct->setShortcut(QKeySequence("Ctrl+Shift+D"));
+    connect(codecConfigAct, SIGNAL(triggered(bool)), this, SLOT(codecConfig()));
+
     connect(ui->actionTarget_Folder, SIGNAL(triggered(bool)), this, SLOT(selectTargetFolder())); //select folder
     connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close())); //close window}
     connect(ui->actionAbout, SIGNAL(triggered(bool)), this, SLOT(about())); //about
@@ -101,6 +114,7 @@ void MainWindow::createActions()
     connect(ui->actionRemove_File, SIGNAL(triggered(bool)), this, SLOT(removeFile())); //remove file
     connect(ui->actionClear_Files, SIGNAL(triggered(bool)), this, SLOT(clearFiles())); //clear files
     connect(ui->actionConvert_Files, SIGNAL(triggered(bool)), this, SLOT(convertFiles())); //convert files
+
 }
 
 
@@ -227,6 +241,7 @@ void MainWindow::writeSettins()
     settings.setValue("PathToSave", targetFolder);
     settings.endGroup();
 
+    codec = formats[codecCB->currentText()];
     settings.beginGroup("Codec");
     settings.setValue("Codec", codec);
     settings.setValue("Bitrate", bitrate);
@@ -241,12 +256,29 @@ void MainWindow::readSettings()
     theme = settings.value("Theme", "Light").toString();
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
-    targetFolder = settings.value("PathToSave", QDir::home() + "/").toString();
+    targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
     settings.endGroup();
 
     settings.beginGroup("Codec");
-    codec = settings.value("Codec", QString("OGG")).toString();
+    codec = settings.value("Codec", QString("libvorbis")).toString();
     bitrate = settings.value("Bitrate", QString("160k")).toString();
     rate = settings.value("Rate", QString("48k")).toString();
     settings.endGroup();
+
+    codecCB->setCurrentText(formats.key(codec));
+}
+
+void MainWindow::codecConfig()
+{
+    ccd = new CodecConfigDialog(this);
+    ccd->setWindowTitle(tr("%1 Configuration").arg(codecCB->currentText()));
+    ccd->setCurrentConfig(bitrate, rate);
+    connect(ccd, SIGNAL(accepted(QString,QString)), this, SLOT(valuesFromConfigDialog(QString,QString))); //configuration dialog
+    ccd->exec();
+}
+
+void MainWindow::valuesFromConfigDialog(QString qbitrate, QString qrate)
+{
+    this->bitrate = qbitrate;
+    this->rate = qrate;
 }
