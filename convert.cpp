@@ -49,6 +49,7 @@ void Convert::finished(int i, QProcess::ExitStatus exitStatus)
 {
     qWarning() << "Lightning Convert: process exit code " + QString::number(i) + " exit status " + QString::number(exitStatus);
     if(exitStatus != 0) {
+        emit convertionFinished();
         g_files.removeFirst();
         convert();
     } else
