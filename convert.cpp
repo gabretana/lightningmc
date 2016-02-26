@@ -4,6 +4,8 @@
 Convert::Convert(QObject *parent) : QObject(parent)
 {
     ffmpeg = new QProcess(this);
+    connectActions();
+    ffmpeg->setProcessChannelMode(QProcess::MergedChannels);
 }
 
 void Convert::processUsed()
@@ -20,19 +22,26 @@ void Convert::processUsed()
 void Convert::connectActions()
 {
     //QProcess
-    connect(ffmpeg, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));
-    connect(ffmpeg, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
+    connect(ffmpeg, SIGNAL(finished(int)), this, SLOT(finished()));
+    connect(ffmpeg, SIGNAL(readyReadStandardOutput()), this, SLOT(readStandardOutput()));
 }
 
 void Convert::convert()
 {
-    qInfo() << "Lightning Convert: starting";
-    if(g_files.size() > 0)
-        ffmpeg->start(pProcess, g_arguments << g_files[0]);
-    else {
+    QStringList args;
+    if(g_files.size() > 0) {
+        args << g_arguments << g_convertedfilenames[0];
+        args.insert(1, g_files[0]);
+        ffmpeg->start(pProcess, args);
+        ffmpeg->waitForStarted();
+        ffmpeg->waitForFinished();
+        ffmpeg->close();
+    } else {
         qWarning() << "Lightning Convert: there are no files";
+        filesconverted = 0;
         emit convertionFinished();
     }
+    args.clear();
 }
 
 void Convert::setFiles(QStringList files)
@@ -40,36 +49,41 @@ void Convert::setFiles(QStringList files)
     g_files = files;
 }
 
+
+void Convert::setConvertedFileNames(QStringList fileNames)
+{
+    g_convertedfilenames = fileNames;
+}
+
 void Convert::setArguments(QStringList arguments)
 {
     g_arguments = arguments;
 }
 
-void Convert::finished(int i, QProcess::ExitStatus exitStatus)
+void Convert::finished()
 {
-    qWarning() << "Lightning Convert: process exit code " + QString::number(i) + " exit status " + QString::number(exitStatus);
-    if(exitStatus != 0) {
-        emit convertionFinished();
-        g_files.removeFirst();
-        convert();
-    } else
-        emit processCrash(exitStatus);
+        if(g_files.size() > 0) {
+            filesconverted++;
+            emit fileConvertionFinished(filesconverted);
+            g_files.removeFirst();
+            g_convertedfilenames.removeFirst();
+            convert();
+        } else
+            emit convertionFinished();
 }
 
-void Convert::error(QProcess::ProcessError e)
+void Convert::error()
 {
-    QString processError = QString::number(e);
-    qWarning() << "Lightning process " + pProcess + " exit with error " + ffmpeg->errorString(); + " " + processError;
-    emit processErrorReport(ffmpeg->errorString());
-}
 
-void Convert::startConvertion(QStringList files)
-{
-    g_files = files;
-    convert();
 }
 
 void Convert::startConvertion()
 {
+    filesconverted = 0;
     convert();
+}
+
+void Convert::readStandardOutput()
+{
+    qDebug() << ffmpeg->readAllStandardOutput();
 }

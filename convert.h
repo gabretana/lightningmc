@@ -14,8 +14,9 @@ public:
     void processUsed();
     QString process() {return pProcess;}
     void setFiles(QStringList files);
+
     void setArguments(QStringList arguments);
-    void startConvertion(QStringList files);
+    void setConvertedFileNames(QStringList fileNames);
     void startConvertion();
 
 signals:
@@ -23,18 +24,20 @@ signals:
     void processCrash(int);
     void processErrorReport(QString);
     void convertionFinished();
+    void fileConvertionFinished(int nfiles);
 
 private slots:
-    void finished(int, QProcess::ExitStatus);
-    void error(QProcess::ProcessError);
+    void finished();
+    void error();
+    void readStandardOutput();
     void convert();
 
 private:
     void connectActions();
     QProcess *ffmpeg;
     QString pProcess;
-    int ffmpeges, libaves;
-    QStringList g_files, backupfiles, g_arguments;
+    int filesconverted, ffmpeges, libaves;
+    QStringList g_files, backupfiles, g_arguments, g_convertedfilenames;
 };
 
 #endif // CONVERT_H
