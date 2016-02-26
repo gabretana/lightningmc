@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightning.png"))));
-    setWindowTitle("Lightning");
+    setWindowTitle("LightningMC");
     convertion = new Convert(this);
     lFiles = new LightningFiles(this);
     checkConverter();
@@ -115,6 +115,9 @@ void MainWindow::createActions()
     connect(ui->actionClear_Files, SIGNAL(triggered(bool)), this, SLOT(clearFiles())); //clear files
     connect(ui->actionConvert_Files, SIGNAL(triggered(bool)), this, SLOT(convertFiles())); //convert files
 
+    connect(convertion, SIGNAL(fileConvertionFinished(int)), this, SLOT(fileConvertionFinished(int)));
+    connect(convertion, SIGNAL(convertionFinished()), this, SLOT(convertionFinished()));
+
 }
 
 
@@ -127,7 +130,7 @@ void MainWindow::addFormats()
 
 void MainWindow::selectTargetFolder()
 {
-    targetFolder = QFileDialog::getExistingDirectory(this, "Lightning", QDir::homePath());
+    targetFolder = QFileDialog::getExistingDirectory(this, "LightningMC", QDir::homePath());
     if(targetFolder.isEmpty()) {
         targetFolder = QDir::homePath() + "/";
         lFiles->setPath(targetFolder);
@@ -140,8 +143,8 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, "About Lightning", tr("<h2>Lightning v0.3</h2>"
-                                                   "<p>Issei / GX (isseigx@xmpp.jp), 2015</p>"
+    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.4</h2>"
+                                                   "<p>Gabriel Retana, Copyleft 2015</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
 
@@ -189,7 +192,10 @@ void MainWindow::clearFiles()
 
 void MainWindow::convertFiles()
 {
-    QStringList args1;
+    convertPrB->setMaximum(files.size());
+    convertPrB->setVisible(true);
+    filesconverted = 0;
+    /*QStringList args1;
     QFileInfoList finfo;
     QString cdc = formats[codecCB->currentText()];
     QString frate, fbit, fname, baseName;
@@ -223,7 +229,22 @@ void MainWindow::convertFiles()
 
         }
         convertPrB->setVisible(false);
-    }
+    }*/
+    lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
+    lFiles->setPath(targetFolder);
+    lFiles->addNewSuffix();
+
+    QStringList args;
+    args << "-i" << "-c:a" << codec << "-r:a" << rate << "-b:a" << bitrate << "-ac" << "2" << "-vn";
+
+    if(codec != "aac")
+        args << "-strict" << "-2";
+
+    convertion->setFiles(files);
+    convertion->setConvertedFileNames(lFiles->filesWithNewSuffix());
+    convertion->setArguments(args);
+
+    convertion->startConvertion();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -257,6 +278,7 @@ void MainWindow::readSettings()
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
+    lFiles->setPath(targetFolder);
     settings.endGroup();
 
     settings.beginGroup("Codec");
@@ -281,4 +303,23 @@ void MainWindow::valuesFromConfigDialog(QString qbitrate, QString qrate)
 {
     this->bitrate = qbitrate;
     this->rate = qrate;
+}
+
+
+void MainWindow::fileConvertionFinished(int file)
+{
+    qWarning() << "File Convertion Finished";
+    if(files.size() > 0) {
+        files.removeFirst();
+        ++filesconverted;
+        convertPrB->setValue(file);
+        ui->statusBar->showMessage("Converting: " + files[0]);
+    }
+}
+
+void MainWindow::convertionFinished()
+{
+    qWarning() << "Convertion Finished";
+    convertPrB->setVisible(false);
+    ui->statusBar->showMessage(tr("Convertions finished"), 10);
 }

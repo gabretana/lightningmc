@@ -34,10 +34,15 @@ private slots:
     void selectTargetFolder();
     void about();
     void aboutQt();
+
     void addFiles();
     void removeFile();
     void clearFiles();
     void convertFiles();
+
+    void fileConvertionFinished(int file);
+    void convertionFinished();
+
     //void showCodecConfigDialog();
     void valuesFromConfigDialog(QString qbitrate, QString qrate);
 
@@ -68,6 +73,7 @@ private:
 
     QString pCommand, targetFolder, theme, codec, bitrate, rate;
     QStringList fileNames, files;
+    int filesconverted;
 
     QMap<QString, QString> formats;
 
