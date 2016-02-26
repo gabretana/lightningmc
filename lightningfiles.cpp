@@ -9,13 +9,13 @@ LightningFiles::LightningFiles(QObject *parent) : QObject(parent)
 void LightningFiles::setFilesSuffix(QString suffix)
 {
     newsuffix = suffix;
-    qDebug() << "LightningFiles new suffix" + newsuffix;
+    qInfo() << "LightningFiles new suffix: " + newsuffix;
 }
 
 void LightningFiles::setPath(QString p)
 {
     newPath = p;
-    qDebug() << "LightningFiles new path" + newPath;
+    qInfo() << "LightningFiles new path: " + newPath;
 }
 
 void LightningFiles::addFilesToChangeSuffix(QStringList files)
