@@ -60,14 +60,15 @@ private:
     void addFormats();
     void readSettings();
     void writeSettins();
+    void setIcons(QString theme = "light");
 
-    QComboBox *codecCB, *bitrateCB, *rateCB;
+    QComboBox *codecCB;
     QLabel *filesHeaderLb, *targetFolderLb;
     QListWidget *addedFilesLW;
     QProgressBar *convertPrB;
 
-    QMenu *editMenu;
-    QAction *codecConfigAct;
+    QMenu *editMenu, *fileMenu, *helpMenu;
+    QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *selectTargFolderAct;
 
     QProcess *converter;
 

@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenus();
     createProgressBar();
     readSettings();
+    setIcons();
 }
 
 MainWindow::~MainWindow()
@@ -33,13 +34,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::checkConverter()
 {
-    /*int ffExitState, avExitState;
-    ffExitState = QProcess::execute("ffmpeg", QStringList() << "-version");
-    avExitState = QProcess::execute("avconv", QStringList() << "-version");
-    if(ffExitState != 0)
-        pCommand = "avconv";
-    else if(avExitState != 0)
-        pCommand = "ffmpeg";*/
     convertion->processUsed();
     pCommand = convertion->process();
     ui->statusBar->showMessage("Using: " + pCommand, 10000);
@@ -47,25 +41,10 @@ void MainWindow::checkConverter()
 
 void MainWindow::createComboBoxes()
 {
-    /*bitrateCB = new QComboBox(this);
-    bitrateCB->addItems(QStringList() << "96k" << "128k" << "160k" << "192k" << "256k" << "320k");
-    bitrateCB->setCurrentIndex(1);
-    bitrateCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    ui->optionsHLayout->addWidget(bitrateCB);*/
-
     codecCB = new QComboBox(this);
     codecCB->addItems(QStringList() << "OGG" << "M4A" << "MP3");
-    //codecCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    //ui->optionsHLayout->addWidget(codecCB);
     ui->mainToolBar->addWidget(codecCB);
     ui->mainToolBar->setMovable(false);
-
-    /*rateCB = new QComboBox(this);
-    rateCB->addItems(QStringList() << "48k" << "44k" << "32k");
-    rateCB->setCurrentIndex(1);
-    rateCB->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    ui->optionsHLayout->addWidget(rateCB);
-    ui->optionsHLayout->addStretch();*/
 }
 
 
@@ -95,9 +74,20 @@ void MainWindow::createProgressBar()
 
 void MainWindow::createMenus()
 {
+    fileMenu = new QMenu(tr("File"), this);
+    fileMenu->addAction(selectTargFolderAct);
+    fileMenu->addAction(exitAct);
+
     editMenu = new QMenu(tr("Edit"), this);
     editMenu->addAction(codecConfigAct);
+
+    helpMenu = new QMenu(tr("Help"), this);
+    helpMenu->addAction(aboutAct);
+    helpMenu->addAction(aboutQtAct);
+
+    ui->menuBar->addMenu(fileMenu);
     ui->menuBar->addMenu(editMenu);
+    ui->menuBar->addMenu(helpMenu);
 }
 
 void MainWindow::createActions()
@@ -106,10 +96,21 @@ void MainWindow::createActions()
     codecConfigAct->setShortcut(QKeySequence("Ctrl+Shift+D"));
     connect(codecConfigAct, SIGNAL(triggered(bool)), this, SLOT(codecConfig()));
 
-    connect(ui->actionTarget_Folder, SIGNAL(triggered(bool)), this, SLOT(selectTargetFolder())); //select folder
-    connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close())); //close window}
-    connect(ui->actionAbout, SIGNAL(triggered(bool)), this, SLOT(about())); //about
-    connect(ui->actionAbout_Qt, SIGNAL(triggered(bool)), this, SLOT(aboutQt())); //about qt
+    selectTargFolderAct = new QAction(tr("Select Target Folder"), this);
+    selectTargFolderAct->setShortcut(QKeySequence("Ctrl+T"));
+    connect(selectTargFolderAct, SIGNAL(triggered(bool)), this, SLOT(selectTargetFolder())); //select folder
+
+    exitAct = new QAction(tr("E&xit"), this);
+    exitAct->setShortcut(QKeySequence::Quit);
+    connect(exitAct, SIGNAL(triggered(bool)), this, SLOT(close())); //close window
+
+    aboutAct = new QAction(tr("About"), this);
+    aboutAct->setShortcut(QKeySequence("Ctrl+F1"));
+    connect(aboutAct, SIGNAL(triggered(bool)), this, SLOT(about())); //about
+
+    aboutQtAct = new QAction(tr("About Qt"), this);
+    connect(aboutQtAct, SIGNAL(triggered(bool)), this, SLOT(aboutQt())); //about qt
+
     connect(ui->actionAddFiles, SIGNAL(triggered(bool)), this, SLOT(addFiles())); //add files
     connect(ui->actionRemove_File, SIGNAL(triggered(bool)), this, SLOT(removeFile())); //remove file
     connect(ui->actionClear_Files, SIGNAL(triggered(bool)), this, SLOT(clearFiles())); //clear files
@@ -195,41 +196,6 @@ void MainWindow::convertFiles()
     convertPrB->setMaximum(files.size());
     convertPrB->setVisible(true);
     filesconverted = 0;
-    /*QStringList args1;
-    QFileInfoList finfo;
-    QString cdc = formats[codecCB->currentText()];
-    QString frate, fbit, fname, baseName;
-    frate = rateCB->currentText();
-    fbit = bitrateCB->currentText();
-    int count = 0;
-    convertPrB->setMaximum(files.size());
-    for(int i = 0; i < files.size(); ++i)
-        finfo << QFileInfo(files[i]);
-
-    if(!files.isEmpty()) {
-        convertPrB->setVisible(true);
-        while(files.size() > 0) {
-            baseName = finfo[0].fileName();
-            fname = targetFolder + baseName.remove(finfo[0].suffix(), Qt::CaseInsensitive) + codecCB->currentText().toLower();
-            args1 << "-i" << files[0] << "-c:a" << cdc << "-r:a" << frate << "-b:a"
-                  << fbit << "-ac" << "2" << "-vn";
-            if((cdc == "aac") & (pCommand == "ffmpeg"))
-                args1 << "-strict" << "-2";
-            args1 << fname;
-            addedFilesLW->item(count)->setIcon(QIcon::fromTheme("media-playback-start"));
-            ui->statusBar->showMessage("Converting: " + files[0]);
-            converter->execute(pCommand, args1);
-            addedFilesLW->item(count)->setIcon(QIcon::fromTheme("emblem-default"));
-            files.removeFirst();
-            finfo.removeFirst();
-            args1.clear();
-            ++count;
-            qDebug() << count;
-            convertPrB->setValue(count);
-
-        }
-        convertPrB->setVisible(false);
-    }*/
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
     lFiles->setPath(targetFolder);
     lFiles->addNewSuffix();
@@ -308,13 +274,9 @@ void MainWindow::valuesFromConfigDialog(QString qbitrate, QString qrate)
 
 void MainWindow::fileConvertionFinished(int file)
 {
-    qWarning() << "File Convertion Finished";
-    if(files.size() > 0) {
-        files.removeFirst();
         ++filesconverted;
         convertPrB->setValue(file);
         ui->statusBar->showMessage("Converting: " + files[0]);
-    }
 }
 
 void MainWindow::convertionFinished()
@@ -322,4 +284,16 @@ void MainWindow::convertionFinished()
     qWarning() << "Convertion Finished";
     convertPrB->setVisible(false);
     ui->statusBar->showMessage(tr("Convertions finished"), 10);
+    files.clear();
+    ui->actionConvert_Files->setEnabled(false);
+}
+
+void MainWindow::setIcons(QString theme)
+{
+    if(theme == "light") {
+        ui->actionAddFiles->setIcon(QIcon(QString::fromUtf8("://img/ic_add_black_36px.svg")));
+        ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_black_36px.svg")));
+        ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_black_36px.svg")));
+        ui->actionConvert_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_sync_black_32px.svg")));
+    }
 }
