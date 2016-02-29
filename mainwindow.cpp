@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenus();
     createProgressBar();
     readSettings();
-    setIcons();
 }
 
 MainWindow::~MainWindow()
@@ -303,9 +302,9 @@ void MainWindow::convertionFinished()
     ui->actionConvert_Files->setEnabled(false);
 }
 
-void MainWindow::setIcons(QString theme)
+void MainWindow::setIcons(QString stheme)
 {
-    if(theme == "light") {
+    if(stheme == "light") {
         ui->actionAddFiles->setIcon(QIcon(QString::fromUtf8("://img/ic_add_black_36px.svg")));
         ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_black_36px.svg")));
         ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_black_36px.svg")));
