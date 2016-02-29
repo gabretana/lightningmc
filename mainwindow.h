@@ -14,6 +14,7 @@ class QProcess;
 class QProgressBar;
 class QMenu;
 class QAction;
+class QActionGroup;
 
 namespace Ui {
 class MainWindow;
@@ -43,6 +44,9 @@ private slots:
     void fileConvertionFinished(int file);
     void convertionFinished();
 
+    void lightTheme();
+    void darkTheme();
+
     //void showCodecConfigDialog();
     void valuesFromConfigDialog(QString qbitrate, QString qrate);
 
@@ -67,8 +71,10 @@ private:
     QListWidget *addedFilesLW;
     QProgressBar *convertPrB;
 
-    QMenu *editMenu, *fileMenu, *helpMenu;
-    QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *selectTargFolderAct;
+    QMenu *editMenu, *fileMenu, *helpMenu, *themeMenu;
+    QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *selectTargFolderAct, *darkThemeAct, *lightThemeAct;
+    QActionGroup *themeActGroup;
+
 
     QProcess *converter;
 

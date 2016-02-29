@@ -74,14 +74,18 @@ void MainWindow::createProgressBar()
 
 void MainWindow::createMenus()
 {
-    fileMenu = new QMenu(tr("File"), this);
+    fileMenu = new QMenu(tr("&File"), this);
     fileMenu->addAction(selectTargFolderAct);
     fileMenu->addAction(exitAct);
 
-    editMenu = new QMenu(tr("Edit"), this);
+    editMenu = new QMenu(tr("&Edit"), this);
     editMenu->addAction(codecConfigAct);
 
-    helpMenu = new QMenu(tr("Help"), this);
+    themeMenu = editMenu->addMenu(tr("&Theme"));
+    themeMenu->addAction(lightThemeAct);
+    themeMenu->addAction(darkThemeAct);
+
+    helpMenu = new QMenu(tr("&Help"), this);
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
 
@@ -118,6 +122,16 @@ void MainWindow::createActions()
 
     connect(convertion, SIGNAL(fileConvertionFinished(int)), this, SLOT(fileConvertionFinished(int)));
     connect(convertion, SIGNAL(convertionFinished()), this, SLOT(convertionFinished()));
+
+    themeActGroup = new QActionGroup(this);
+
+    lightThemeAct = new QAction(tr("Light"), themeActGroup);
+    lightThemeAct->setCheckable(true);
+    connect(lightThemeAct, SIGNAL(triggered(bool)), this, SLOT(lightTheme()));
+
+    darkThemeAct = new QAction(tr("Dark"), themeActGroup);
+    darkThemeAct->setCheckable(true);
+    connect(darkThemeAct, SIGNAL(triggered(bool)), this, SLOT(darkTheme()));
 
 }
 
@@ -240,7 +254,7 @@ void MainWindow::readSettings()
 {
     QSettings settings("GXA Software", "LightningMC");
     settings.beginGroup("General");
-    theme = settings.value("Theme", "Light").toString();
+    theme = settings.value("Theme", "light").toString();
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
@@ -254,6 +268,7 @@ void MainWindow::readSettings()
     settings.endGroup();
 
     codecCB->setCurrentText(formats.key(codec));
+    setIcons(theme);
 }
 
 void MainWindow::codecConfig()
@@ -295,5 +310,24 @@ void MainWindow::setIcons(QString theme)
         ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_black_36px.svg")));
         ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_black_36px.svg")));
         ui->actionConvert_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_sync_black_32px.svg")));
+        lightThemeAct->setChecked(true);
+    } else {
+        ui->actionAddFiles->setIcon(QIcon(QString::fromUtf8("://img/ic_add_white_36px.svg")));
+        ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_white_36px.svg")));
+        ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_white_36px.svg")));
+        ui->actionConvert_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_sync_white_32px.svg")));
+        darkThemeAct->setChecked(true);
     }
+}
+
+void MainWindow::lightTheme()
+{
+    theme = "light";
+    setIcons(theme);
+}
+
+void MainWindow::darkTheme()
+{
+    theme = "dark";
+    setIcons(theme);
 }
