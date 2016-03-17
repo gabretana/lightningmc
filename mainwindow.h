@@ -65,6 +65,7 @@ private:
     void readSettings();
     void writeSettins();
     void setIcons(QString stheme);
+    void setTheme(QString stheme);
 
     QComboBox *codecCB;
     QLabel *filesHeaderLb, *targetFolderLb;

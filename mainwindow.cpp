@@ -267,7 +267,7 @@ void MainWindow::readSettings()
     settings.endGroup();
 
     codecCB->setCurrentText(formats.key(codec));
-    setIcons(theme);
+    setTheme(theme);
 }
 
 void MainWindow::codecConfig()
@@ -302,6 +302,21 @@ void MainWindow::convertionFinished()
     ui->actionConvert_Files->setEnabled(false);
 }
 
+
+void MainWindow::setTheme(QString stheme)
+{
+    if(stheme == "light") {
+        setIcons(stheme);
+    } else {
+        QFile file("://themes/dark.qss");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            setStyleSheet(file.readAll());
+            file.close();
+            setIcons(stheme);
+        }
+    }
+}
+
 void MainWindow::setIcons(QString stheme)
 {
     if(stheme == "light") {
@@ -322,11 +337,11 @@ void MainWindow::setIcons(QString stheme)
 void MainWindow::lightTheme()
 {
     theme = "light";
-    setIcons(theme);
+    setTheme(theme);
 }
 
 void MainWindow::darkTheme()
 {
     theme = "dark";
-    setIcons(theme);
+    setTheme(theme);
 }
