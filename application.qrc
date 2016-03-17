@@ -3,13 +3,16 @@
         <file>img/lightning.png</file>
         <file>img/ic_add_black_36px.svg</file>
         <file>img/ic_add_white_36px.svg</file>
-        <file>img/ic_arrow_drop_down_black_36px.svg</file>
-        <file>img/ic_arrow_drop_down_white_36px.svg</file>
         <file>img/ic_clear_black_36px.svg</file>
         <file>img/ic_clear_white_36px.svg</file>
         <file>img/ic_remove_black_36px.svg</file>
         <file>img/ic_remove_white_36px.svg</file>
         <file>img/ic_sync_black_32px.svg</file>
         <file>img/ic_sync_white_32px.svg</file>
+        <file>themes/dark.qss</file>
+        <file>img/arrow-drop-down-black.png</file>
+        <file>img/arrow-drop-down-white.png</file>
+        <file>img/check-black.png</file>
+        <file>img/check-white.png</file>
     </qresource>
 </RCC>
