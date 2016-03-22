@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Lightning
+Name[es]= Conversor de sonido Lightning
+Comment=Easy-to-use sound converter
+Comment[es]=Conversor de sonido fácil de usar
+GenericName=Sound Converter
+GenericName[es]=Conversor de Sonido
+Exec=lightningmc
+Icon=lightningmc
+Terminal=false
+Type=Application
+Categories=Qt;AudioVideo;Sound;
+StartupNotify=false

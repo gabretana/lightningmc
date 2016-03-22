@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/lightning.png</file>
         <file>img/ic_add_black_36px.svg</file>
         <file>img/ic_add_white_36px.svg</file>
         <file>img/ic_clear_black_36px.svg</file>
@@ -15,5 +14,6 @@
         <file>img/check-black.png</file>
         <file>img/check-white.png</file>
         <file>themes/light.qss</file>
+        <file>img/lightningmc.svg</file>
     </qresource>
 </RCC>
