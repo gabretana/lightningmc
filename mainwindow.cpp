@@ -306,7 +306,12 @@ void MainWindow::convertionFinished()
 void MainWindow::setTheme(QString stheme)
 {
     if(stheme == "light") {
-        setIcons(stheme);
+        QFile file("://themes/light.qss");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            setStyleSheet(file.readAll());
+            file.close();
+            setIcons(stheme);
+        }
     } else {
         QFile file("://themes/dark.qss");
         if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {

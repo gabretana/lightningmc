@@ -14,5 +14,6 @@
         <file>img/arrow-drop-down-white.png</file>
         <file>img/check-black.png</file>
         <file>img/check-white.png</file>
+        <file>themes/light.qss</file>
     </qresource>
 </RCC>
