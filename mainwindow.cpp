@@ -10,18 +10,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightningmc.svg"))));
     setWindowTitle("LightningMC");
-    convertion = new Convert(this);
+    convertion = new Convert();
     lFiles = new LightningFiles(this);
     checkConverter();
-    targetFolder = QDir::homePath() + "/";
     createComboBoxes();
     createLabels();
     createListWidget();
     ui->actionConvert_Files->setEnabled(false);
     addFormats();
     converter = new QProcess(this);
+    ffmpegThread = new QThread;
     createActions();
     createMenus();
+    connectThreadActions();
     createProgressBar();
     readSettings();
 }
@@ -134,6 +135,13 @@ void MainWindow::createActions()
 
 }
 
+void MainWindow::connectThreadActions()
+{
+    connect(ffmpegThread, SIGNAL(started()), convertion, SLOT(startConvertion()));
+    connect(convertion, SIGNAL(convertionFinished()), ffmpegThread, SLOT(quit()));
+    //connect(convertion, SIGNAL(convertionFinished()), ffmpegThread, SLOT(deleteLater()));
+    //connect(ffmpegThread, SIGNAL(finished()), ffmpegThread, SLOT(deleteLater()));
+}
 
 void MainWindow::addFormats()
 {
@@ -152,13 +160,13 @@ void MainWindow::selectTargetFolder()
         targetFolder = targetFolder + "/";
         lFiles->setPath(targetFolder);
     }
-    targetFolderLb->setText("Target Folder: " + targetFolder);
+    targetFolderLb->setText(tr("Target folder: %1").arg(targetFolder));
 }
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.4</h2>"
-                                                   "<p>Gabriel Retana, Copyleft 2015</p>"
+    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.5</h2>"
+                                                   "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
 
@@ -181,6 +189,9 @@ void MainWindow::addFiles()
     for(int i = 0; i < addedFilesLW->count(); ++i){
         addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent"));
     }
+    ui->actionConvert_Files->setEnabled(true);
+    ui->actionClear_Files->setEnabled(true);
+    ui->actionRemove_File->setEnabled(true);
 }
 
 void MainWindow::removeFile()
@@ -189,8 +200,11 @@ void MainWindow::removeFile()
         files.removeAt(addedFilesLW->currentRow());
         lFiles->removeFileAt(addedFilesLW->currentRow());
         delete addedFilesLW->currentItem();
-        if(addedFilesLW->count() == 0)
+        if(addedFilesLW->count() == 0) {
             ui->actionConvert_Files->setEnabled(false);
+            ui->actionClear_Files->setEnabled(false);
+            ui->actionRemove_File->setEnabled(false);
+        }
     }
 }
 
@@ -198,10 +212,14 @@ void MainWindow::clearFiles()
 {
     if(addedFilesLW->count() > 0) {
         addedFilesLW->clear();
-        files.clear();
         ui->actionConvert_Files->setEnabled(false);
         lFiles->clearAllData();
     }
+    if(files.isEmpty())
+        files.clear();
+
+    ui->actionClear_Files->setEnabled(false);
+    ui->actionRemove_File->setEnabled(false);
 }
 
 void MainWindow::convertFiles()
@@ -210,6 +228,7 @@ void MainWindow::convertFiles()
     convertPrB->setVisible(true);
     filesconverted = 0;
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
+    codec = formats[codecCB->currentText()];
     lFiles->setPath(targetFolder);
     lFiles->addNewSuffix();
 
@@ -223,7 +242,14 @@ void MainWindow::convertFiles()
     convertion->setConvertedFileNames(lFiles->filesWithNewSuffix());
     convertion->setArguments(args);
 
-    convertion->startConvertion();
+    ui->actionAddFiles->setEnabled(false);
+    ui->actionConvert_Files->setEnabled(false);
+    ui->actionClear_Files->setEnabled(false);
+    ui->actionRemove_File->setEnabled(false);
+
+    //convertion->startConvertion();
+    convertion->moveToThread(ffmpegThread);
+    ffmpegThread->start();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -257,7 +283,7 @@ void MainWindow::readSettings()
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
-    lFiles->setPath(targetFolder);
+    //lFiles->setPath(targetFolder);
     settings.endGroup();
 
     settings.beginGroup("Codec");
@@ -267,6 +293,7 @@ void MainWindow::readSettings()
     settings.endGroup();
 
     codecCB->setCurrentText(formats.key(codec));
+    targetFolderLb->setText(tr("Target folder: %1").arg(targetFolder));
     setTheme(theme);
 }
 
@@ -299,7 +326,10 @@ void MainWindow::convertionFinished()
     convertPrB->setVisible(false);
     ui->statusBar->showMessage(tr("Convertions finished"), 10);
     files.clear();
-    ui->actionConvert_Files->setEnabled(false);
+
+    ui->actionAddFiles->setEnabled(true);
+    ui->actionClear_Files->setEnabled(true);
+    ui->actionRemove_File->setEnabled(true);
 }
 
 

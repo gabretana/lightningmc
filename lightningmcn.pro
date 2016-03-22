@@ -28,3 +28,16 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     application.qrc
+
+target.path = /usr/bin/
+
+icon.files = img/lightningmc.svg
+icon.path = /usr/share/icons/hicolor/scalable/apps
+
+iconPixmaps.files = img/lightningmc.svg
+iconPixmaps.path = /usr/share/pixmaps
+
+desktop.files = lightningmc.desktop
+desktop.path = /usr/share/applications
+
+INSTALLS += target icon iconPixmaps desktop

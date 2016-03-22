@@ -17,6 +17,9 @@ public:
 
     void setArguments(QStringList arguments);
     void setConvertedFileNames(QStringList fileNames);
+
+public slots:
+
     void startConvertion();
 
 signals:

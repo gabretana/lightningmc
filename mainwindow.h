@@ -66,6 +66,7 @@ private:
     void writeSettins();
     void setIcons(QString stheme);
     void setTheme(QString stheme);
+    void connectThreadActions();
 
     QComboBox *codecCB;
     QLabel *filesHeaderLb, *targetFolderLb;
@@ -89,6 +90,9 @@ private:
     Convert *convertion;
     LightningFiles *lFiles;
     CodecConfigDialog *ccd;
+
+    //Thread
+    QThread* ffmpegThread;
 };
 
 #endif // MAINWINDOW_H
