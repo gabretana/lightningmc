@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    setAcceptDrops(true);
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightningmc.svg"))));
     setWindowTitle("LightningMC");
@@ -18,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createListWidget();
     ui->actionConvert_Files->setEnabled(false);
     addFormats();
-    converter = new QProcess(this);
+    //converter = new QProcess(this);
     ffmpegThread = new QThread;
     createActions();
     createMenus();
@@ -379,4 +380,26 @@ void MainWindow::darkTheme()
 {
     theme = "dark";
     setTheme(theme);
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasUrls())
+        event->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    QMimeDatabase db;
+    foreach (QUrl url, event->mimeData()->urls()) {
+        QMimeType mime = db.mimeTypeForFile(url.toLocalFile());
+        if(mime.inherits("audio/ogg") || mime.inherits("audio/mp4") || mime.inherits("audio/mpeg") ||
+                mime.inherits("audio/x-aiff") || mime.inherits("audio/x-ms-wma")) {
+            addedFilesLW->addItem(url.toLocalFile());
+            files << url.toLocalFile();
+            lFiles->addFile(url.toLocalFile());
+        }
+    }
+    if(!files.isEmpty())
+        ui->actionConvert_Files->setEnabled(true);
 }

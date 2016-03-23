@@ -28,8 +28,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 protected:
     void closeEvent(QCloseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private slots:
     void selectTargetFolder();
@@ -67,6 +70,7 @@ private:
     void setIcons(QString stheme);
     void setTheme(QString stheme);
     void connectThreadActions();
+    void addFileToLists(QStringList g_files);
 
     QComboBox *codecCB;
     QLabel *filesHeaderLb, *targetFolderLb;
@@ -78,7 +82,7 @@ private:
     QActionGroup *themeActGroup;
 
 
-    QProcess *converter;
+    //QProcess *converter;
 
     QString pCommand, targetFolder, theme, codec, bitrate, rate;
     QStringList fileNames, files;
