@@ -1,19 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/ic_add_black_36px.svg</file>
-        <file>img/ic_add_white_36px.svg</file>
-        <file>img/ic_clear_black_36px.svg</file>
-        <file>img/ic_clear_white_36px.svg</file>
-        <file>img/ic_remove_black_36px.svg</file>
-        <file>img/ic_remove_white_36px.svg</file>
-        <file>img/ic_sync_black_32px.svg</file>
-        <file>img/ic_sync_white_32px.svg</file>
-        <file>themes/dark.qss</file>
-        <file>img/arrow-drop-down-black.png</file>
-        <file>img/arrow-drop-down-white.png</file>
-        <file>img/check-black.png</file>
-        <file>img/check-white.png</file>
-        <file>themes/light.qss</file>
         <file>img/lightningmc.svg</file>
+        <file>img/m_add.svg</file>
+        <file>img/m_clear.svg</file>
+        <file>img/m_remove.svg</file>
+        <file>img/m_sync.svg</file>
     </qresource>
 </RCC>

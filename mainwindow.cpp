@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("lightningmc", QIcon(QString::fromUtf8("://img/lightningmc.svg"))));
     setWindowTitle("LightningMC");
+    setIcons();
     convertion = new Convert();
     lFiles = new LightningFiles(this);
     checkConverter();
@@ -19,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createListWidget();
     ui->actionConvert_Files->setEnabled(false);
     addFormats();
-    //converter = new QProcess(this);
     ffmpegThread = new QThread;
     createActions();
     createMenus();
@@ -82,10 +82,6 @@ void MainWindow::createMenus()
     editMenu = new QMenu(tr("&Edit"), this);
     editMenu->addAction(codecConfigAct);
 
-    themeMenu = editMenu->addMenu(tr("&Theme"));
-    themeMenu->addAction(lightThemeAct);
-    themeMenu->addAction(darkThemeAct);
-
     helpMenu = new QMenu(tr("&Help"), this);
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
@@ -123,17 +119,6 @@ void MainWindow::createActions()
 
     connect(convertion, SIGNAL(fileConvertionFinished(int)), this, SLOT(fileConvertionFinished(int)));
     connect(convertion, SIGNAL(convertionFinished()), this, SLOT(convertionFinished()));
-
-    themeActGroup = new QActionGroup(this);
-
-    lightThemeAct = new QAction(tr("Light"), themeActGroup);
-    lightThemeAct->setCheckable(true);
-    connect(lightThemeAct, SIGNAL(triggered(bool)), this, SLOT(lightTheme()));
-
-    darkThemeAct = new QAction(tr("Dark"), themeActGroup);
-    darkThemeAct->setCheckable(true);
-    connect(darkThemeAct, SIGNAL(triggered(bool)), this, SLOT(darkTheme()));
-
 }
 
 void MainWindow::connectThreadActions()
@@ -262,7 +247,6 @@ void MainWindow::writeSettins()
 {
     QSettings settings("GXA Software", "LightningMC");
     settings.beginGroup("General");
-    settings.setValue("Theme", theme);
     settings.setValue("Position", pos());
     settings.setValue("WinSize", size());
     settings.setValue("PathToSave", targetFolder);
@@ -280,11 +264,9 @@ void MainWindow::readSettings()
 {
     QSettings settings("GXA Software", "LightningMC");
     settings.beginGroup("General");
-    theme = settings.value("Theme", "light").toString();
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
-    //lFiles->setPath(targetFolder);
     settings.endGroup();
 
     settings.beginGroup("Codec");
@@ -295,7 +277,6 @@ void MainWindow::readSettings()
 
     codecCB->setCurrentText(formats.key(codec));
     targetFolderLb->setText(tr("Target folder: %1").arg(targetFolder));
-    setTheme(theme);
 }
 
 void MainWindow::codecConfig()
@@ -334,53 +315,14 @@ void MainWindow::convertionFinished()
 }
 
 
-void MainWindow::setTheme(QString stheme)
+void MainWindow::setIcons()
 {
-    if(stheme == "light") {
-        QFile file("://themes/light.qss");
-        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            setStyleSheet(file.readAll());
-            file.close();
-            setIcons(stheme);
-        }
-    } else {
-        QFile file("://themes/dark.qss");
-        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            setStyleSheet(file.readAll());
-            file.close();
-            setIcons(stheme);
-        }
-    }
+    ui->actionAddFiles->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
+    ui->actionRemove_File->setIcon(QIcon::fromTheme("list-remove", QIcon("://img/m_remove.svg")));
+    ui->actionClear_Files->setIcon(QIcon::fromTheme("edit-clear-all", QIcon("://img/m_clear.svg")));
+    ui->actionConvert_Files->setIcon(QIcon::fromTheme("emblem-synchronizing", QIcon("://img/m_sync.svg")));
 }
 
-void MainWindow::setIcons(QString stheme)
-{
-    if(stheme == "light") {
-        ui->actionAddFiles->setIcon(QIcon(QString::fromUtf8("://img/ic_add_black_36px.svg")));
-        ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_black_36px.svg")));
-        ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_black_36px.svg")));
-        ui->actionConvert_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_sync_black_32px.svg")));
-        lightThemeAct->setChecked(true);
-    } else {
-        ui->actionAddFiles->setIcon(QIcon(QString::fromUtf8("://img/ic_add_white_36px.svg")));
-        ui->actionRemove_File->setIcon(QIcon(QString::fromUtf8("://img/ic_remove_white_36px.svg")));
-        ui->actionClear_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_clear_white_36px.svg")));
-        ui->actionConvert_Files->setIcon(QIcon(QString::fromUtf8("://img/ic_sync_white_32px.svg")));
-        darkThemeAct->setChecked(true);
-    }
-}
-
-void MainWindow::lightTheme()
-{
-    theme = "light";
-    setTheme(theme);
-}
-
-void MainWindow::darkTheme()
-{
-    theme = "dark";
-    setTheme(theme);
-}
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
