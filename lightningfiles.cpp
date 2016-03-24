@@ -29,7 +29,10 @@ void LightningFiles::addNewSuffix()
     QString tmp = "", filetmp = "";
     int count = 0;
     foreach (tmp, fileNames) {
-        filetmp = newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
+        //filetmp = newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
+        filetmp = newPath + tmp.remove(QFileInfo(tmp).suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
+
+        qDebug() << "*** Lightning Files: " + filetmp;
 
         if(QFile(filetmp).exists()) {
             qWarning() << "LightningFiles file exists: " + filetmp;
