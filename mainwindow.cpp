@@ -216,13 +216,11 @@ void MainWindow::convertFiles()
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
     codec = formats[codecCB->currentText()];
     lFiles->setPath(targetFolder);
+    qDebug() << targetFolder;
     lFiles->addNewSuffix();
 
     QStringList args;
     args << "-i" << "-c:a" << codec << "-r:a" << rate << "-b:a" << bitrate << "-ac" << "2" << "-vn";
-
-    if(codec != "aac")
-        args << "-strict" << "-2";
 
     convertion->setFiles(files);
     convertion->setConvertedFileNames(lFiles->filesWithNewSuffix());

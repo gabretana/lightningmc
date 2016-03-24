@@ -32,10 +32,13 @@ void Convert::convert()
     if(g_files.size() > 0) {
         args << g_arguments << g_convertedfilenames[0];
         args.insert(1, g_files[0]);
+
+        ffmpeg->close();
         ffmpeg->start(pProcess, args);
+        //ffmpeg->execute(pProcess, args);
         ffmpeg->waitForStarted();
         ffmpeg->waitForFinished();
-        ffmpeg->close();
+        //ffmpeg->close();
     } else {
         qWarning() << "Lightning Convert: there are no files";
         filesconverted = 0;
