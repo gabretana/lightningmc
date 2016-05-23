@@ -1,5 +1,6 @@
 #include "lightningfiles.h"
 #include <QDebug>
+#include <QDateTime>
 
 LightningFiles::LightningFiles(QObject *parent) : QObject(parent)
 {
@@ -27,7 +28,7 @@ void LightningFiles::addFilesToChangeSuffix(QStringList files)
 void LightningFiles::addNewSuffix()
 {
     QString tmp = "", filetmp = "";
-    int count = 0;
+    //int count = 0;
     foreach (tmp, fileNames) {
         //filetmp = newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
         filetmp = newPath + tmp.remove(QFileInfo(tmp).suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
@@ -36,6 +37,9 @@ void LightningFiles::addNewSuffix()
 
         if(QFile(filetmp).exists()) {
             qWarning() << "LightningFiles file exists: " + filetmp;
+            QString dt = QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC).toString("yy-M-d-H-m-ss");
+            filetmp = newPath + dt + tmp.remove(QFileInfo(tmp).suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
+            pFilesWithNewSuffix << filetmp;
             emit fileExists(tmp, filetmp);
         } else
             pFilesWithNewSuffix << filetmp;

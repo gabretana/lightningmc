@@ -151,7 +151,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.5</h2>"
+    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.6</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
@@ -173,7 +173,7 @@ void MainWindow::addFiles()
         lFiles->addFilesToChangeSuffix(fileNames);
     }
     for(int i = 0; i < addedFilesLW->count(); ++i){
-        addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent"));
+        addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent", "://img/m_time.svg"));
     }
     ui->actionConvert_Files->setEnabled(true);
     ui->actionClear_Files->setEnabled(true);
@@ -212,11 +212,14 @@ void MainWindow::convertFiles()
 {
     convertPrB->setMaximum(files.size());
     convertPrB->setVisible(true);
+    convertPrB->setValue(1);
+    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", "://img/m_play.svg"));
     filesconverted = 0;
+    ui->statusBar->showMessage(tr("Converting: %1").arg(files[0]));
+
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
     codec = formats[codecCB->currentText()];
     lFiles->setPath(targetFolder);
-    qDebug() << targetFolder;
     lFiles->addNewSuffix();
 
     QStringList args;
@@ -295,16 +298,18 @@ void MainWindow::valuesFromConfigDialog(QString qbitrate, QString qrate)
 
 void MainWindow::fileConvertionFinished(int file)
 {
-        ++filesconverted;
-        convertPrB->setValue(file);
-        ui->statusBar->showMessage("Converting: " + files[0]);
+    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("emblem-default", "://img/m_check.svg"));
+    ++filesconverted;
+    convertPrB->setValue(file + 1);
+    ui->statusBar->showMessage(tr("Converting: %1").arg(files[file]));
+    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", "://img/m_play.svg"));
 }
 
 void MainWindow::convertionFinished()
 {
     qWarning() << "Convertion Finished";
     convertPrB->setVisible(false);
-    ui->statusBar->showMessage(tr("Convertions finished"), 10);
+    ui->statusBar->showMessage(tr("Convertion finished"), 10);
     files.clear();
 
     ui->actionAddFiles->setEnabled(true);
@@ -338,6 +343,7 @@ void MainWindow::dropEvent(QDropEvent *event)
             addedFilesLW->addItem(url.toLocalFile());
             files << url.toLocalFile();
             lFiles->addFile(url.toLocalFile());
+            addedFilesLW->item(files.size() - 1)->setIcon(QIcon("emblem-urgent", "://img/m_time.svg"));
         }
     }
     if(!files.isEmpty())

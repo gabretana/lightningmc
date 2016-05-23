@@ -5,5 +5,8 @@
         <file>img/m_clear.svg</file>
         <file>img/m_remove.svg</file>
         <file>img/m_sync.svg</file>
+        <file>img/m_check.svg</file>
+        <file>img/m_play.svg</file>
+        <file>img/m_time.svg</file>
     </qresource>
 </RCC>
