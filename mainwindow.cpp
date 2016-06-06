@@ -173,7 +173,7 @@ void MainWindow::addFiles()
         lFiles->addFilesToChangeSuffix(fileNames);
     }
     for(int i = 0; i < addedFilesLW->count(); ++i){
-        addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent", "://img/m_time.svg"));
+        addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
     }
     ui->actionConvert_Files->setEnabled(true);
     ui->actionClear_Files->setEnabled(true);
@@ -213,8 +213,8 @@ void MainWindow::convertFiles()
     convertPrB->setMaximum(files.size());
     convertPrB->setVisible(true);
     convertPrB->setValue(1);
-    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", "://img/m_play.svg"));
     filesconverted = 0;
+    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", QIcon("://img/m_play.svg")));
     ui->statusBar->showMessage(tr("Converting: %1").arg(files[0]));
 
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
@@ -298,11 +298,11 @@ void MainWindow::valuesFromConfigDialog(QString qbitrate, QString qrate)
 
 void MainWindow::fileConvertionFinished(int file)
 {
-    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("emblem-default", "://img/m_check.svg"));
+    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("emblem-default", QIcon("://img/m_check.svg")));
     ++filesconverted;
     convertPrB->setValue(file + 1);
     ui->statusBar->showMessage(tr("Converting: %1").arg(files[file]));
-    addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", "://img/m_play.svg"));
+    addedFilesLW->item(file)->setIcon(QIcon::fromTheme("media-playback-start", QIcon("://img/m_play.svg")));
 }
 
 void MainWindow::convertionFinished()
@@ -311,7 +311,7 @@ void MainWindow::convertionFinished()
     convertPrB->setVisible(false);
     ui->statusBar->showMessage(tr("Convertion finished"), 10);
     files.clear();
-
+    addedFilesLW->item(addedFilesLW->count() - 1)->setIcon(QIcon::fromTheme("emblem-default", QIcon("://img/m_check.svg")));
     ui->actionAddFiles->setEnabled(true);
     ui->actionClear_Files->setEnabled(true);
     ui->actionRemove_File->setEnabled(true);
@@ -343,7 +343,7 @@ void MainWindow::dropEvent(QDropEvent *event)
             addedFilesLW->addItem(url.toLocalFile());
             files << url.toLocalFile();
             lFiles->addFile(url.toLocalFile());
-            addedFilesLW->item(files.size() - 1)->setIcon(QIcon("emblem-urgent", "://img/m_time.svg"));
+            addedFilesLW->item(files.size() - 1)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
         }
     }
     if(!files.isEmpty())
