@@ -30,8 +30,7 @@ signals:
     void fileConvertionFinished(int nfiles);
 
 private slots:
-    void finished();
-    void error();
+    void finish();
     void readStandardOutput();
     void convert();
 
@@ -39,7 +38,7 @@ private:
     void connectActions();
     QProcess *ffmpeg;
     QString pProcess;
-    int filesconverted, ffmpeges, libaves;
+    int filesconverted, ffmpeges, libaves, g_size;
     QStringList g_files, backupfiles, g_arguments, g_convertedfilenames;
 };
 
