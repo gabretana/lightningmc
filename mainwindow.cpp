@@ -37,7 +37,7 @@ void MainWindow::checkConverter()
 {
     convertion->processUsed();
     pCommand = convertion->process();
-    ui->statusBar->showMessage("Using: " + pCommand, 10000);
+    ui->statusBar->showMessage(tr("Using: %1").arg(pCommand), 10000);
 }
 
 void MainWindow::createComboBoxes()
@@ -51,10 +51,10 @@ void MainWindow::createComboBoxes()
 
 void MainWindow::createLabels()
 {
-    filesHeaderLb = new QLabel("Files: ", this);
+    filesHeaderLb = new QLabel(tr("Files: "), this);
     ui->filesVLayout->addWidget(filesHeaderLb);
 
-    targetFolderLb = new QLabel("Target Path: " + targetFolder, this);
+    targetFolderLb = new QLabel(tr("Save in: %1").arg(targetFolder), this);
     targetFolderLb->setMaximumWidth(350);
     ui->miscHLayout->addWidget(targetFolderLb);
     ui->miscHLayout->addStretch();
@@ -93,11 +93,11 @@ void MainWindow::createMenus()
 
 void MainWindow::createActions()
 {
-    codecConfigAct = new QAction(tr("Codec Configuration"),this);
+    codecConfigAct = new QAction(tr("Codec Settings"),this);
     codecConfigAct->setShortcut(QKeySequence("Ctrl+Shift+D"));
     connect(codecConfigAct, SIGNAL(triggered(bool)), this, SLOT(codecConfig()));
 
-    selectTargFolderAct = new QAction(tr("Select Target Folder"), this);
+    selectTargFolderAct = new QAction(tr("Save in..."), this);
     selectTargFolderAct->setShortcut(QKeySequence("Ctrl+T"));
     connect(selectTargFolderAct, SIGNAL(triggered(bool)), this, SLOT(selectTargetFolder())); //select folder
 
@@ -146,25 +146,25 @@ void MainWindow::selectTargetFolder()
         targetFolder = targetFolder + "/";
         lFiles->setPath(targetFolder);
     }
-    targetFolderLb->setText(tr("Target folder: %1").arg(targetFolder));
+    targetFolderLb->setText(tr("Save in: %1").arg(targetFolder));
 }
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.6.1</h2>"
+    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.6.1</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
 
 void MainWindow::aboutQt()
 {
-    QMessageBox::aboutQt(this, "About Qt");
+    QMessageBox::aboutQt(this, tr("About Qt"));
 }
 
 void MainWindow::addFiles()
 {
     fileNames.clear();
-    fileNames = QFileDialog::getOpenFileNames(this, "Add Files", QDir::homePath(),
+    fileNames = QFileDialog::getOpenFileNames(this, tr("Add Files"), QDir::homePath(),
                                               "Audio Files (*.ogg *.oga *.mp3 *.m4a *.wma *.flac *.aiff)");
     if(!fileNames.isEmpty()){
         addedFilesLW->addItems(fileNames);
@@ -277,13 +277,13 @@ void MainWindow::readSettings()
     settings.endGroup();
 
     codecCB->setCurrentText(formats.key(codec));
-    targetFolderLb->setText(tr("Target folder: %1").arg(targetFolder));
+    targetFolderLb->setText(tr("Save in: %1").arg(targetFolder));
 }
 
 void MainWindow::codecConfig()
 {
     ccd = new CodecConfigDialog(this);
-    ccd->setWindowTitle(tr("%1 Configuration").arg(codecCB->currentText()));
+    ccd->setWindowTitle(tr("%1 Settings").arg(codecCB->currentText()));
     ccd->setCurrentConfig(bitrate, rate);
     connect(ccd, SIGNAL(accepted(QString,QString)), this, SLOT(valuesFromConfigDialog(QString,QString))); //configuration dialog
     ccd->exec();
