@@ -24,8 +24,6 @@ public slots:
 
 signals:
     void processFinished(int, QProcess::ExitStatus);
-    void processCrash(int);
-    void processErrorReport(QString);
     void convertionFinished();
     void fileConvertionFinished(int nfiles);
 

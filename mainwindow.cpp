@@ -151,7 +151,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.6</h2>"
+    QMessageBox::about(this, "About LightningMC", tr("<h2>LightningMC v0.6.1</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
