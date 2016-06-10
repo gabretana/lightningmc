@@ -26,6 +26,6 @@ Arch Linux PKGBUILD available
  * [Libav](https://libav.org/)
  * [Qt](http://www.qt.io/)
 
-#### Bug reports, contact, my englis is bad :v ...
+#### Bug reports, contact, my english is bad :v ...
 
 If you find a bug please fill a bug report on bugs section; if you have questions, comments or any other thing, send me a email to gabrielretana@about.me, if you use XMPP/Jabber send your message to isseigx@xmpp.jp or a message to telegram @isseigx
