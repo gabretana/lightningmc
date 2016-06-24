@@ -346,6 +346,9 @@ void MainWindow::dropEvent(QDropEvent *event)
             addedFilesLW->item(files.size() - 1)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
         }
     }
-    if(!files.isEmpty())
+    if(!files.isEmpty()) {
         ui->actionConvert_Files->setEnabled(true);
+     	ui->actionRemove_File->setEnable(true);
+     	ui->actionClear_Files->setEnable(true);   
+    }    
 }
