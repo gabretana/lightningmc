@@ -86,6 +86,11 @@ void MainWindow::createMenus()
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
 
+    themeMenu = editMenu->addMenu(tr("&Theme"));
+    themeMenu->addAction(lightThemeAct);
+    themeMenu->addAction(darkThemeAct);
+    themeMenu->addAction(sysThemeAct);
+
     ui->menuBar->addMenu(fileMenu);
     ui->menuBar->addMenu(editMenu);
     ui->menuBar->addMenu(helpMenu);
@@ -119,6 +124,20 @@ void MainWindow::createActions()
 
     connect(convertion, SIGNAL(fileConvertionFinished(int)), this, SLOT(fileConvertionFinished(int)));
     connect(convertion, SIGNAL(convertionFinished()), this, SLOT(convertionFinished()));
+
+    //theme actions
+    themeActGroup = new QActionGroup(this);
+    lightThemeAct = new QAction(tr("&Light"), themeActGroup);
+    lightThemeAct->setCheckable(true);
+    connect(lightThemeAct, &QAction::triggered, this, &MainWindow::lightTheme);
+
+    darkThemeAct = new QAction(tr("&Dark"), themeActGroup);
+    darkThemeAct->setCheckable(true);
+    connect(darkThemeAct, &QAction::triggered, this, &MainWindow::darkTheme);
+
+    sysThemeAct = new QAction(tr("&System"), themeActGroup);
+    sysThemeAct->setCheckable(true);
+    connect(sysThemeAct, &QAction::triggered, this, &MainWindow::systemTheme);
 }
 
 void MainWindow::connectThreadActions()
@@ -151,7 +170,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.6.1</h2>"
+    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.6.2</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
@@ -248,6 +267,7 @@ void MainWindow::writeSettins()
 {
     QSettings settings("GXA Software", "LightningMC");
     settings.beginGroup("General");
+    settings.setValue("Theme", theme);
     settings.setValue("Position", pos());
     settings.setValue("WinSize", size());
     settings.setValue("PathToSave", targetFolder);
@@ -265,6 +285,7 @@ void MainWindow::readSettings()
 {
     QSettings settings("GXA Software", "LightningMC");
     settings.beginGroup("General");
+    theme = settings.value("Theme", "system").toString();
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
@@ -278,6 +299,7 @@ void MainWindow::readSettings()
 
     codecCB->setCurrentText(formats.key(codec));
     targetFolderLb->setText(tr("Save in: %1").arg(targetFolder));
+    setTheme(theme);
 }
 
 void MainWindow::codecConfig()
@@ -348,7 +370,47 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
     if(!files.isEmpty()) {
         ui->actionConvert_Files->setEnabled(true);
-     	ui->actionRemove_File->setEnable(true);
-     	ui->actionClear_Files->setEnable(true);   
+        ui->actionRemove_File->setEnabled(true);
+        ui->actionClear_Files->setEnabled(true);
     }    
+}
+
+void MainWindow::setTheme(QString stheme)
+{
+    if(stheme == "light") {
+        QFile file(":/themes/themes/light.qss");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            setStyleSheet(file.readAll());
+            file.close();
+            lightThemeAct->setChecked(true);
+        }
+    } else if(stheme == "dark") {
+        QFile file(":/themes/themes/dark.qss");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            setStyleSheet(file.readAll());
+            file.close();
+            darkThemeAct->setChecked(true);
+        }
+    } else {
+        setStyleSheet(this->styleSheet());
+        sysThemeAct->setChecked(true);
+    }
+}
+
+void MainWindow::darkTheme()
+{
+    theme = "dark";
+    setTheme(theme);
+}
+
+void MainWindow::lightTheme()
+{
+    theme = "light";
+    setTheme(theme);
+}
+
+void MainWindow::systemTheme()
+{
+    theme = "system";
+    setTheme(theme);
 }

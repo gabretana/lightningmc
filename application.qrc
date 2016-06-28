@@ -9,4 +9,8 @@
         <file>img/m_play.svg</file>
         <file>img/m_time.svg</file>
     </qresource>
+    <qresource prefix="/themes">
+        <file>themes/dark.qss</file>
+        <file>themes/light.qss</file>
+    </qresource>
 </RCC>
