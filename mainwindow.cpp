@@ -236,9 +236,9 @@ void MainWindow::convertFiles()
     addedFilesLW->item(filesconverted)->setIcon(QIcon::fromTheme("media-playback-start", QIcon("://img/m_play.svg")));
     ui->statusBar->showMessage(tr("Converting: %1").arg(files[0]));
 
+    lFiles->setPath(targetFolder);
     lFiles->setFilesSuffix(codecCB->currentText()); //add new file suffix
     codec = formats[codecCB->currentText()];
-    lFiles->setPath(targetFolder);
     lFiles->addNewSuffix();
 
     QStringList args;

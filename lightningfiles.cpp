@@ -33,8 +33,6 @@ void LightningFiles::addNewSuffix()
         //filetmp = newPath + tmp.remove(fileInfoList[count].suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
         filetmp = newPath + tmp.remove(QFileInfo(tmp).suffix(), Qt::CaseInsensitive) + newsuffix.toLower();
 
-        qDebug() << "*** Lightning Files: " + filetmp;
-
         if(QFile(filetmp).exists()) {
             qWarning() << "LightningFiles file exists: " + filetmp;
             QString dt = QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC).toString("yy-M-d-H-m-ss");
@@ -52,7 +50,7 @@ void LightningFiles::addFileInfoToList(QStringList files)
     for(int i = 0; i < files.size(); ++i) {
         fileInfoList << QFileInfo(files[i]);
         fileNames << QFileInfo(files[i]).fileName();
-        qDebug() << "LightningFiles add file: " + fileNames[i];
+        qInfo() << "LightningFiles add file: " + fileNames[i];
     }
 }
 
@@ -82,6 +80,6 @@ void LightningFiles::addFile(QString filename)
     if(filename != "") {
         fileInfoList << QFileInfo(filename);
         fileNames << QFileInfo(filename).fileName();
-        qDebug() << "LightningFiles add file: " + fileNames[fileNames.size() - 1];
+        qInfo() << "LightningFiles add file: " + fileNames[fileNames.size() - 1];
     }
 }
