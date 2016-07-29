@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createComboBoxes();
     createLabels();
     createListWidget();
+    createToolButton();
     ui->actionConvert_Files->setEnabled(false);
     addFormats();
     ffmpegThread = new QThread;
@@ -91,6 +92,13 @@ void MainWindow::createMenus()
     themeMenu->addAction(darkThemeAct);
     themeMenu->addAction(sysThemeAct);
 
+    convMenu = new QMenu(this);
+    convMenu->addAction(addAudioAct);
+    convMenu->addAction(addImageAct);
+
+
+
+    addFilesTB->setMenu(convMenu);
     ui->menuBar->addMenu(fileMenu);
     ui->menuBar->addMenu(editMenu);
     ui->menuBar->addMenu(helpMenu);
@@ -117,7 +125,13 @@ void MainWindow::createActions()
     aboutQtAct = new QAction(tr("About Qt"), this);
     connect(aboutQtAct, SIGNAL(triggered(bool)), this, SLOT(aboutQt())); //about qt
 
-    connect(ui->actionAddFiles, SIGNAL(triggered(bool)), this, SLOT(addFiles())); //add files
+    addAudioAct = new QAction(tr("Add Audio"));
+    connect(addAudioAct, SIGNAL(triggered(bool)), this, SLOT(addAudio())); // add audio files
+
+    addImageAct = new QAction(tr("Add Images"));
+    connect(addImageAct, SIGNAL(triggered(bool)), this, SLOT(addImage())); // add image files
+
+    //connect(ui->actionAddFiles, SIGNAL(triggered(bool)), this, SLOT(addFiles())); //add files
     connect(ui->actionRemove_File, SIGNAL(triggered(bool)), this, SLOT(removeFile())); //remove file
     connect(ui->actionClear_Files, SIGNAL(triggered(bool)), this, SLOT(clearFiles())); //clear files
     connect(ui->actionConvert_Files, SIGNAL(triggered(bool)), this, SLOT(convertFiles())); //convert files
@@ -153,6 +167,10 @@ void MainWindow::addFormats()
     formats["OGG"] = "libvorbis";
     formats["M4A"] = "aac";
     formats["MP3"] = "libmp3lame";
+    formats["JPG"] = "jpg";
+    formats["PNG"] = "png";
+    formats["TIFF"] = "tiff";
+    formats["WEBP"] = "webp";
 }
 
 void MainWindow::selectTargetFolder()
@@ -248,7 +266,7 @@ void MainWindow::convertFiles()
     convertion->setConvertedFileNames(lFiles->filesWithNewSuffix());
     convertion->setArguments(args);
 
-    ui->actionAddFiles->setEnabled(false);
+    //ui->actionAddFiles->setEnabled(false);
     ui->actionConvert_Files->setEnabled(false);
     ui->actionClear_Files->setEnabled(false);
     ui->actionRemove_File->setEnabled(false);
@@ -334,7 +352,7 @@ void MainWindow::convertionFinished()
     ui->statusBar->showMessage(tr("Convertion finished"), 10);
     files.clear();
     addedFilesLW->item(addedFilesLW->count() - 1)->setIcon(QIcon::fromTheme("emblem-default", QIcon("://img/m_check.svg")));
-    ui->actionAddFiles->setEnabled(true);
+    //ui->actionAddFiles->setEnabled(true);
     ui->actionClear_Files->setEnabled(true);
     ui->actionRemove_File->setEnabled(true);
 }
@@ -342,7 +360,7 @@ void MainWindow::convertionFinished()
 
 void MainWindow::setIcons()
 {
-    ui->actionAddFiles->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
+    //ui->actionAddFiles->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
     ui->actionRemove_File->setIcon(QIcon::fromTheme("list-remove", QIcon("://img/m_remove.svg")));
     ui->actionClear_Files->setIcon(QIcon::fromTheme("edit-clear-all", QIcon("://img/m_clear.svg")));
     ui->actionConvert_Files->setIcon(QIcon::fromTheme("emblem-synchronizing", QIcon("://img/m_sync.svg")));
@@ -413,4 +431,22 @@ void MainWindow::systemTheme()
 {
     theme = "system";
     setTheme(theme);
+}
+
+void MainWindow::addAudio()
+{
+    qInfo() << "Add Audio Files";
+}
+
+void MainWindow::addImage()
+{
+    qInfo() << "Add Image Files";
+}
+
+void MainWindow::createToolButton()
+{
+    addFilesTB = new QToolButton(this);
+    addFilesTB->setPopupMode(QToolButton::InstantPopup);
+    addFilesTB->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
+    ui->mainToolBar->insertWidget(ui->actionRemove_File, addFilesTB);
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -28,11 +28,9 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionAddFiles;
     QAction *actionRemove_File;
     QAction *actionClear_Files;
     QAction *actionConvert_Files;
-    QAction *actionCancel_Convertion;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *miscHLayout;
@@ -54,56 +52,36 @@ public:
             icon.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
         }
         MainWindow->setWindowIcon(icon);
-        actionAddFiles = new QAction(MainWindow);
-        actionAddFiles->setObjectName(QStringLiteral("actionAddFiles"));
+        actionRemove_File = new QAction(MainWindow);
+        actionRemove_File->setObjectName(QStringLiteral("actionRemove_File"));
         QIcon icon1;
-        iconThemeName = QStringLiteral("add");
+        iconThemeName = QStringLiteral("remove");
         if (QIcon::hasThemeIcon(iconThemeName)) {
             icon1 = QIcon::fromTheme(iconThemeName);
         } else {
             icon1.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
         }
-        actionAddFiles->setIcon(icon1);
-        actionRemove_File = new QAction(MainWindow);
-        actionRemove_File->setObjectName(QStringLiteral("actionRemove_File"));
+        actionRemove_File->setIcon(icon1);
+        actionClear_Files = new QAction(MainWindow);
+        actionClear_Files->setObjectName(QStringLiteral("actionClear_Files"));
         QIcon icon2;
-        iconThemeName = QStringLiteral("remove");
+        iconThemeName = QStringLiteral("edit-clear");
         if (QIcon::hasThemeIcon(iconThemeName)) {
             icon2 = QIcon::fromTheme(iconThemeName);
         } else {
             icon2.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
         }
-        actionRemove_File->setIcon(icon2);
-        actionClear_Files = new QAction(MainWindow);
-        actionClear_Files->setObjectName(QStringLiteral("actionClear_Files"));
+        actionClear_Files->setIcon(icon2);
+        actionConvert_Files = new QAction(MainWindow);
+        actionConvert_Files->setObjectName(QStringLiteral("actionConvert_Files"));
         QIcon icon3;
-        iconThemeName = QStringLiteral("edit-clear");
+        iconThemeName = QStringLiteral("view-refresh");
         if (QIcon::hasThemeIcon(iconThemeName)) {
             icon3 = QIcon::fromTheme(iconThemeName);
         } else {
             icon3.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
         }
-        actionClear_Files->setIcon(icon3);
-        actionConvert_Files = new QAction(MainWindow);
-        actionConvert_Files->setObjectName(QStringLiteral("actionConvert_Files"));
-        QIcon icon4;
-        iconThemeName = QStringLiteral("view-refresh");
-        if (QIcon::hasThemeIcon(iconThemeName)) {
-            icon4 = QIcon::fromTheme(iconThemeName);
-        } else {
-            icon4.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
-        }
-        actionConvert_Files->setIcon(icon4);
-        actionCancel_Convertion = new QAction(MainWindow);
-        actionCancel_Convertion->setObjectName(QStringLiteral("actionCancel_Convertion"));
-        QIcon icon5;
-        iconThemeName = QStringLiteral("cancel");
-        if (QIcon::hasThemeIcon(iconThemeName)) {
-            icon5 = QIcon::fromTheme(iconThemeName);
-        } else {
-            icon5.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
-        }
-        actionCancel_Convertion->setIcon(icon5);
+        actionConvert_Files->setIcon(icon3);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -125,7 +103,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 24));
+        menuBar->setGeometry(QRect(0, 0, 600, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -134,10 +112,10 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
-        mainToolBar->addAction(actionAddFiles);
         mainToolBar->addAction(actionRemove_File);
         mainToolBar->addAction(actionClear_Files);
         mainToolBar->addAction(actionConvert_Files);
+        mainToolBar->addSeparator();
 
         retranslateUi(MainWindow);
 
@@ -147,11 +125,6 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Lightning", 0));
-        actionAddFiles->setText(QApplication::translate("MainWindow", "AddFiles", 0));
-#ifndef QT_NO_TOOLTIP
-        actionAddFiles->setToolTip(QApplication::translate("MainWindow", "Add Files", 0));
-#endif // QT_NO_TOOLTIP
-        actionAddFiles->setShortcut(QApplication::translate("MainWindow", "Ctrl+A", 0));
         actionRemove_File->setText(QApplication::translate("MainWindow", "Remove File", 0));
 #ifndef QT_NO_TOOLTIP
         actionRemove_File->setToolTip(QApplication::translate("MainWindow", "Remove Selected File", 0));
@@ -167,11 +140,6 @@ public:
         actionConvert_Files->setToolTip(QApplication::translate("MainWindow", "Convert Files", 0));
 #endif // QT_NO_TOOLTIP
         actionConvert_Files->setShortcut(QApplication::translate("MainWindow", "Alt+Shift+C", 0));
-        actionCancel_Convertion->setText(QApplication::translate("MainWindow", "Cancel Convertion", 0));
-#ifndef QT_NO_TOOLTIP
-        actionCancel_Convertion->setToolTip(QApplication::translate("MainWindow", "Cancel Convertion", 0));
-#endif // QT_NO_TOOLTIP
-        actionCancel_Convertion->setShortcut(QApplication::translate("MainWindow", "Ctrl+L", 0));
     } // retranslateUi
 
 };

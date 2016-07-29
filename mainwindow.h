@@ -15,6 +15,7 @@ class QProgressBar;
 class QMenu;
 class QAction;
 class QActionGroup;
+class QToolButton;
 
 namespace Ui {
 class MainWindow;
@@ -55,6 +56,9 @@ private slots:
     void lightTheme();
     void systemTheme();
 
+    void addAudio();
+    void addImage();
+
 private:
     Ui::MainWindow *ui;
     void checkConverter();
@@ -64,6 +68,7 @@ private:
     void createLabels();
     void createListWidget();
     void createProgressBar();
+    void createToolButton();
     void addFormats();
     void readSettings();
     void writeSettins();
@@ -77,9 +82,11 @@ private:
     QListWidget *addedFilesLW;
     QProgressBar *convertPrB;
 
-    QMenu *editMenu, *fileMenu, *helpMenu, *themeMenu;
-    QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *selectTargFolderAct, *darkThemeAct, *lightThemeAct, *sysThemeAct;
+    QMenu *editMenu, *fileMenu, *helpMenu, *themeMenu, *convMenu;
+    QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *addAudioAct, *addImageAct, *selectTargFolderAct,
+    *darkThemeAct, *lightThemeAct, *sysThemeAct;
     QActionGroup *themeActGroup;
+    QToolButton *addFilesTB;
 
     QString pCommand, targetFolder, theme, codec, bitrate, rate;
     QStringList fileNames, files;

@@ -33,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -44,27 +44,12 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionAddFiles"/>
    <addaction name="actionRemove_File"/>
    <addaction name="actionClear_Files"/>
    <addaction name="actionConvert_Files"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionAddFiles">
-   <property name="icon">
-    <iconset theme="add">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>AddFiles</string>
-   </property>
-   <property name="toolTip">
-    <string>Add Files</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+A</string>
-   </property>
-  </action>
   <action name="actionRemove_File">
    <property name="icon">
     <iconset theme="remove">
@@ -108,21 +93,6 @@
    </property>
    <property name="shortcut">
     <string>Alt+Shift+C</string>
-   </property>
-  </action>
-  <action name="actionCancel_Convertion">
-   <property name="icon">
-    <iconset theme="cancel">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>Cancel Convertion</string>
-   </property>
-   <property name="toolTip">
-    <string>Cancel Convertion</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+L</string>
    </property>
   </action>
  </widget>
