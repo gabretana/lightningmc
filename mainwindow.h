@@ -40,7 +40,7 @@ private slots:
     void about();
     void aboutQt();
 
-    void addFiles();
+    void addFiles(QString filetype);
     void removeFile();
     void clearFiles();
     void convertFiles();

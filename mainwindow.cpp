@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     createListWidget();
     createToolButton();
     ui->actionConvert_Files->setEnabled(false);
+    ui->actionClear_Files->setEnabled(false);
+    ui->actionRemove_File->setEnabled(false);
     addFormats();
     ffmpegThread = new QThread;
     createActions();
@@ -198,11 +200,17 @@ void MainWindow::aboutQt()
     QMessageBox::aboutQt(this, tr("About Qt"));
 }
 
-void MainWindow::addFiles()
+void MainWindow::addFiles(QString filetype)
 {
+    QString types;
+
+    if(filetype == "image")
+        types = tr("Image files: %1").arg("(*.jpeg *.jpg *.png *.tiff *.webp)");
+    else
+        types = tr("Audio files: %1").arg("(*.ogg *.oga *.mp3 *.m4a *.wma *.flac *.aiff)");
+
     fileNames.clear();
-    fileNames = QFileDialog::getOpenFileNames(this, tr("Add Files"), QDir::homePath(),
-                                              "Audio Files (*.ogg *.oga *.mp3 *.m4a *.wma *.flac *.aiff)");
+    fileNames = QFileDialog::getOpenFileNames(this, tr("Add Files"), QDir::homePath(), types);
     if(!fileNames.isEmpty()){
         addedFilesLW->addItems(fileNames);
         ui->actionConvert_Files->setEnabled(true);
@@ -227,6 +235,8 @@ void MainWindow::removeFile()
             ui->actionConvert_Files->setEnabled(false);
             ui->actionClear_Files->setEnabled(false);
             ui->actionRemove_File->setEnabled(false);
+            addAudioAct->setEnabled(true);
+            addImageAct->setEnabled(true);
         }
     }
 }
@@ -243,6 +253,8 @@ void MainWindow::clearFiles()
 
     ui->actionClear_Files->setEnabled(false);
     ui->actionRemove_File->setEnabled(false);
+    addAudioAct->setEnabled(true);
+    addImageAct->setEnabled(true);
 }
 
 void MainWindow::convertFiles()
@@ -436,11 +448,15 @@ void MainWindow::systemTheme()
 void MainWindow::addAudio()
 {
     qInfo() << "Add Audio Files";
+    addImageAct->setEnabled(false);
+    addFiles("audio");
 }
 
 void MainWindow::addImage()
 {
     qInfo() << "Add Image Files";
+    addAudioAct->setEnabled(false);
+    addFiles("image");
 }
 
 void MainWindow::createToolButton()
