@@ -46,9 +46,9 @@ void MainWindow::checkConverter()
 void MainWindow::createComboBoxes()
 {
     codecCB = new QComboBox(this);
-    codecCB->addItems(QStringList() << "OGG" << "M4A" << "MP3");
     ui->mainToolBar->addWidget(codecCB);
     ui->mainToolBar->setMovable(false);
+    comboBoxAddItems();
 }
 
 
@@ -301,6 +301,7 @@ void MainWindow::writeSettins()
     settings.setValue("Position", pos());
     settings.setValue("WinSize", size());
     settings.setValue("PathToSave", targetFolder);
+    settings.setValue("ConvertionType", convType);
     settings.endGroup();
 
     codec = formats[codecCB->currentText()];
@@ -319,6 +320,7 @@ void MainWindow::readSettings()
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
+    convType = settings.value("ConvertionType", "audio");
     settings.endGroup();
 
     settings.beginGroup("Codec");
@@ -450,6 +452,7 @@ void MainWindow::addAudio()
     qInfo() << "Add Audio Files";
     addImageAct->setEnabled(false);
     addFiles("audio");
+    comboBoxAddItems();
 }
 
 void MainWindow::addImage()
@@ -457,6 +460,7 @@ void MainWindow::addImage()
     qInfo() << "Add Image Files";
     addAudioAct->setEnabled(false);
     addFiles("image");
+    comboBoxAddItems();
 }
 
 void MainWindow::createToolButton()
@@ -465,4 +469,17 @@ void MainWindow::createToolButton()
     addFilesTB->setPopupMode(QToolButton::InstantPopup);
     addFilesTB->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
     ui->mainToolBar->insertWidget(ui->actionRemove_File, addFilesTB);
+}
+
+void MainWindow::comboBoxAddItems()
+{
+    codecCB->clear();
+    switch (convType) {
+    case "audio":
+        codecCB->addItems(QStringList() << "OGG" << "M4A" << "MP3");
+        break;
+    default:
+        codecCB->addItems(QStringList() << "JPG" << "PNG" << "TIFF" << "WEBP");
+        break;
+    }
 }

@@ -76,6 +76,7 @@ private:
     void connectThreadActions();
     void addFileToLists(QStringList g_files);
     void setTheme(QString stheme);
+    void comboBoxAddItems();
 
     QComboBox *codecCB;
     QLabel *filesHeaderLb, *targetFolderLb;
@@ -88,7 +89,7 @@ private:
     QActionGroup *themeActGroup;
     QToolButton *addFilesTB;
 
-    QString pCommand, targetFolder, theme, codec, bitrate, rate;
+    QString pCommand, targetFolder, theme, codec, bitrate, rate, convType;
     QStringList fileNames, files;
     int filesconverted;
 
