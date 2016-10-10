@@ -190,7 +190,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.6.2</h2>"
+    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.7</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
@@ -204,10 +204,14 @@ void MainWindow::addFiles(QString filetype)
 {
     QString types;
 
-    if(filetype == "image")
+    if(filetype == "image") {
         types = tr("Image files: %1").arg("(*.jpeg *.jpg *.png *.tiff *.webp)");
-    else
+        codecConfigAct->setEnabled(false);
+        
+    } else {
         types = tr("Audio files: %1").arg("(*.ogg *.oga *.mp3 *.m4a *.wma *.flac *.aiff)");
+        codecConfigAct->setEnabled(true);
+    }
 
     fileNames.clear();
     fileNames = QFileDialog::getOpenFileNames(this, tr("Add Files"), QDir::homePath(), types);
@@ -272,7 +276,10 @@ void MainWindow::convertFiles()
     lFiles->addNewSuffix();
 
     QStringList args;
-    args << "-i" << "-c:a" << codec << "-r:a" << rate << "-b:a" << bitrate << "-ac" << "2" << "-vn";
+    if(convType == "audio")
+        args << "-i" << "-c:a" << codec << "-r:a" << rate << "-b:a" << bitrate << "-ac" << "2" << "-vn";
+    else
+        args << "-i";
 
     convertion->setFiles(files);
     convertion->setConvertedFileNames(lFiles->filesWithNewSuffix());
@@ -320,7 +327,7 @@ void MainWindow::readSettings()
     move(settings.value("Position", QPoint(200, 200)).toPoint());
     resize(settings.value("WinSize", QSize(600, 400)).toSize());
     targetFolder = settings.value("PathToSave", QDir::homePath()+ "/").toString();
-    convType = settings.value("ConvertionType", "audio");
+    convType = settings.value("ConvertionType", "audio").toString();
     settings.endGroup();
 
     settings.beginGroup("Codec");
@@ -332,6 +339,9 @@ void MainWindow::readSettings()
     codecCB->setCurrentText(formats.key(codec));
     targetFolderLb->setText(tr("Save in: %1").arg(targetFolder));
     setTheme(theme);
+    
+    if(convType == "image")
+        codecConfigAct->setEnabled(false);
 }
 
 void MainWindow::codecConfig()
@@ -394,11 +404,21 @@ void MainWindow::dropEvent(QDropEvent *event)
         QMimeType mime = db.mimeTypeForFile(url.toLocalFile());
         if(mime.inherits("audio/ogg") || mime.inherits("audio/mp4") || mime.inherits("audio/mpeg") ||
                 mime.inherits("audio/x-aiff") || mime.inherits("audio/x-ms-wma")) {
-            addedFilesLW->addItem(url.toLocalFile());
-            files << url.toLocalFile();
-            lFiles->addFile(url.toLocalFile());
-            addedFilesLW->item(files.size() - 1)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
-        }
+            if(convType == "audio") {
+                addedFilesLW->addItem(url.toLocalFile());
+                files << url.toLocalFile();
+                lFiles->addFile(url.toLocalFile());
+                addedFilesLW->item(files.size() - 1)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
+            }
+        } else if(mime.inherits("image/jpeg") || mime.inherits("image/png") || mime.inherits("image/tiff") ||
+                mime.inherits("image/webp")) {
+            if(convType == "image") {
+                addedFilesLW->addItem(url.toLocalFile());
+                files << url.toLocalFile();
+                lFiles->addFile(url.toLocalFile());
+                addedFilesLW->item(files.size() - 1)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
+            }
+       }
     }
     if(!files.isEmpty()) {
         ui->actionConvert_Files->setEnabled(true);
@@ -453,6 +473,7 @@ void MainWindow::addAudio()
     addImageAct->setEnabled(false);
     addFiles("audio");
     comboBoxAddItems();
+    convType = "audio";
 }
 
 void MainWindow::addImage()
@@ -461,6 +482,7 @@ void MainWindow::addImage()
     addAudioAct->setEnabled(false);
     addFiles("image");
     comboBoxAddItems();
+    convType = "image";
 }
 
 void MainWindow::createToolButton()
@@ -474,12 +496,9 @@ void MainWindow::createToolButton()
 void MainWindow::comboBoxAddItems()
 {
     codecCB->clear();
-    switch (convType) {
-    case "audio":
+    codecCB->update();
+    if(convType == "audio")
         codecCB->addItems(QStringList() << "OGG" << "M4A" << "MP3");
-        break;
-    default:
+    else
         codecCB->addItems(QStringList() << "JPG" << "PNG" << "TIFF" << "WEBP");
-        break;
-    }
 }
