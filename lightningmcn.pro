@@ -8,6 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += debug_and_release
+
 TARGET = lightningmc
 TEMPLATE = app
 
@@ -41,3 +43,16 @@ desktop.files = lightningmc.desktop
 desktop.path = /usr/share/applications
 
 INSTALLS += target icon iconPixmaps desktop
+
+Release:DESTDIR = ../lightning-release
+Release:OBJECTS_DIR = ../lightning-release/.obj
+Release:MOC_DIR = ../lightning-release/.moc
+Release:RCC_DIR = ../lightning-release/.rcc
+Release:UI_DIR = ../lightning-release/.ui
+
+
+Debug:DESTDIR = ../lightning-debug
+Debug:OBJECTS_DIR = ../lightning-debug/.obj
+Debug:MOC_DIR = ../lightning-debug/.moc
+Debug:RCC_DIR = ../lightning-debug/.rcc
+Debug:UI_DIR = ../lightning-debug/.ui
