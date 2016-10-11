@@ -190,7 +190,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.7</h2>"
+    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.7.1</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
@@ -220,13 +220,16 @@ void MainWindow::addFiles(QString filetype)
         ui->actionConvert_Files->setEnabled(true);
         files << fileNames;
         lFiles->addFilesToChangeSuffix(fileNames);
+        
+        ui->actionConvert_Files->setEnabled(true);
+        ui->actionClear_Files->setEnabled(true);
+        ui->actionRemove_File->setEnabled(true);
+        
     }
     for(int i = 0; i < addedFilesLW->count(); ++i){
         addedFilesLW->item(i)->setIcon(QIcon::fromTheme("emblem-urgent", QIcon("://img/m_time.svg")));
     }
-    ui->actionConvert_Files->setEnabled(true);
-    ui->actionClear_Files->setEnabled(true);
-    ui->actionRemove_File->setEnabled(true);
+    
 }
 
 void MainWindow::removeFile()
@@ -472,8 +475,8 @@ void MainWindow::addAudio()
     qInfo() << "Add Audio Files";
     addImageAct->setEnabled(false);
     addFiles("audio");
-    comboBoxAddItems();
     convType = "audio";
+    comboBoxAddItems();
 }
 
 void MainWindow::addImage()
@@ -481,8 +484,8 @@ void MainWindow::addImage()
     qInfo() << "Add Image Files";
     addAudioAct->setEnabled(false);
     addFiles("image");
-    comboBoxAddItems();
     convType = "image";
+    comboBoxAddItems();
 }
 
 void MainWindow::createToolButton()
