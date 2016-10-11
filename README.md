@@ -1,6 +1,8 @@
 # LightningMC
 
-Another front end for FFmpeg / libav-tools with simplistic functions and UI design, at the moment this project only support audio convertion to Ogg, M4A and MP3 files from Ogg, FLAC, M4A, MP3, AIFF and WMA
+Another front end for FFmpeg / libav-tools with simplistic functions and UI design, at the moment this project only supports basic convertion of audio to Ogg, M4A and MP3 files from Ogg, FLAC, M4A, MP3, AIFF and WMA and images from and to JPG, PNG, TIFF and WebP
+
+![](http://i.imgur.com/W7XcTQU.png)
 
 ### Dependencies
 
