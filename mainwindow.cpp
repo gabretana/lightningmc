@@ -151,7 +151,7 @@ void MainWindow::createActions()
     darkThemeAct->setCheckable(true);
     connect(darkThemeAct, &QAction::triggered, this, &MainWindow::darkTheme);
 
-    sysThemeAct = new QAction(tr("&System"), themeActGroup);
+    sysThemeAct = new QAction(tr("&System (Needs Restart)"), themeActGroup);
     sysThemeAct->setCheckable(true);
     connect(sysThemeAct, &QAction::triggered, this, &MainWindow::systemTheme);
 }
