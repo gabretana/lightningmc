@@ -61,7 +61,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void checkConverter();
     void createActions();
     void createMenus();
     void createComboBoxes();
@@ -89,7 +88,7 @@ private:
     QActionGroup *themeActGroup;
     QToolButton *addFilesTB;
 
-    QString pCommand, targetFolder, theme, codec, bitrate, rate, convType;
+    QString pCommand = "ffmpeg", targetFolder, theme, codec, bitrate, rate, convType;
     QStringList fileNames, files;
     int filesconverted;
 

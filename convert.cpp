@@ -8,17 +8,6 @@ Convert::Convert(QObject *parent) : QObject(parent)
     ffmpeg->setProcessChannelMode(QProcess::MergedChannels);
 }
 
-void Convert::processUsed()
-{
-    ffmpeges = QProcess::execute("ffmpeg", QStringList() << "-version");
-    libaves = QProcess::execute("avconv", QStringList() << "-version");
-    if(ffmpeges == 0)
-        pProcess = "ffmpeg";
-    else
-        pProcess = "avconv";
-    qDebug() << "Lightning Convert: using " + pProcess;
-}
-
 void Convert::connectActions()
 {
     //QProcess

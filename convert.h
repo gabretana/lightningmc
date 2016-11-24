@@ -11,8 +11,6 @@ class Convert : public QObject
     Q_OBJECT
 public:
     explicit Convert(QObject *parent = 0);
-    void processUsed();
-    QString process() {return pProcess;}
     void setFiles(QStringList files);
 
     void setArguments(QStringList arguments);
@@ -35,7 +33,7 @@ private slots:
 private:
     void connectActions();
     QProcess *ffmpeg;
-    QString pProcess;
+    QString pProcess = "ffmpeg";
     int filesconverted, ffmpeges, libaves, g_size;
     QStringList g_files, backupfiles, g_arguments, g_convertedfilenames;
 };

@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setIcons();
     convertion = new Convert();
     lFiles = new LightningFiles(this);
-    checkConverter();
     createComboBoxes();
     createLabels();
     createListWidget();
@@ -34,13 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::checkConverter()
-{
-    convertion->processUsed();
-    pCommand = convertion->process();
-    ui->statusBar->showMessage(tr("Using: %1").arg(pCommand), 10000);
 }
 
 void MainWindow::createComboBoxes()
