@@ -92,7 +92,7 @@ void MainWindow::createMenus()
 
 
 
-    addFilesTB->setMenu(convMenu);
+    addFilesPB->setMenu(convMenu);
     ui->menuBar->addMenu(fileMenu);
     ui->menuBar->addMenu(editMenu);
     ui->menuBar->addMenu(helpMenu);
@@ -182,7 +182,7 @@ void MainWindow::selectTargetFolder()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.7.1</h2>"
+    QMessageBox::about(this, tr("About LightningMC"), tr("<h2>LightningMC v0.7.2</h2>"
                                                    "<p>Gabriel Retana, Copyleft 2016</p>"
                                                    "<p>GNU General Public License v3</p>"));
 }
@@ -226,7 +226,7 @@ void MainWindow::addFiles(QString filetype)
 
 void MainWindow::removeFile()
 {
-    if(addedFilesLW->count() > 0) {
+    if(addedFilesLW->count() > 0 && addedFilesLW->currentRow() != -1) {
         files.removeAt(addedFilesLW->currentRow());
         lFiles->removeFileAt(addedFilesLW->currentRow());
         delete addedFilesLW->currentItem();
@@ -482,10 +482,13 @@ void MainWindow::addImage()
 
 void MainWindow::createToolButton()
 {
-    addFilesTB = new QToolButton(this);
+    /*addFilesTB = new QToolButton(this);
     addFilesTB->setPopupMode(QToolButton::InstantPopup);
     addFilesTB->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
-    ui->mainToolBar->insertWidget(ui->actionRemove_File, addFilesTB);
+    ui->mainToolBar->insertWidget(ui->actionRemove_File, addFilesTB);*/
+    addFilesPB = new QPushButton(this);
+    addFilesPB->setIcon(QIcon::fromTheme("list-add", QIcon("://img/m_add.svg")));
+    ui->mainToolBar->insertWidget(ui->actionRemove_File, addFilesPB);
 }
 
 void MainWindow::comboBoxAddItems()

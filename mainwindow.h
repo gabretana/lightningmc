@@ -15,7 +15,8 @@ class QProgressBar;
 class QMenu;
 class QAction;
 class QActionGroup;
-class QToolButton;
+//class QToolButton;
+class QPushButton;
 
 namespace Ui {
 class MainWindow;
@@ -86,7 +87,8 @@ private:
     QAction *codecConfigAct, *aboutAct, *aboutQtAct, *exitAct, *addAudioAct, *addImageAct, *selectTargFolderAct,
     *darkThemeAct, *lightThemeAct, *sysThemeAct;
     QActionGroup *themeActGroup;
-    QToolButton *addFilesTB;
+    //QToolButton *addFilesTB;
+    QPushButton *addFilesPB;
 
     QString pCommand = "ffmpeg", targetFolder, theme, codec, bitrate, rate, convType;
     QStringList fileNames, files;
